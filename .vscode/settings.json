@@ -293,6 +293,10 @@
     "string_view": "cpp",
     "memory": "cpp",
     "random": "cpp",
-    "initializer_list": "cpp"
+    "initializer_list": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "cstdlib": "cpp",
+    "new": "cpp"
   }
 }
