@@ -11,8 +11,6 @@ Home::Home() {
     lv_obj_set_pos(uiBatteryGroup, 0, -96);
     lv_obj_set_align(uiBatteryGroup, LV_ALIGN_CENTER);
     lv_obj_clear_flag(uiBatteryGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_color(uiBatteryGroup, lv_color_hex(0xFFFFFF),
-                              LV_CU_BASE_STYLE);
     lv_obj_set_style_bg_opa(uiBatteryGroup, 0, LV_CU_BASE_STYLE);
     lv_obj_set_style_border_color(uiBatteryGroup, lv_color_hex(0x000000),
                                   LV_CU_BASE_STYLE);
@@ -41,7 +39,6 @@ Home::Home() {
   lv_obj_set_pos(uiTime, 0, -24);
   lv_obj_set_align(uiTime, LV_ALIGN_CENTER);
   lv_obj_clear_flag(uiTime, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_set_style_bg_color(uiTime, lv_color_hex(0xFFFFFF), LV_CU_BASE_STYLE);
   lv_obj_set_style_bg_opa(uiTime, 0, LV_CU_BASE_STYLE);
   lv_obj_set_style_border_color(uiTime, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
@@ -53,8 +50,6 @@ Home::Home() {
     lv_obj_set_pos(uiDateGroup, 33, -25);
     lv_obj_set_align(uiDateGroup, LV_ALIGN_CENTER);
     lv_obj_clear_flag(uiDateGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_color(uiDateGroup, lv_color_hex(0xFFFFFF),
-                              LV_CU_BASE_STYLE);
     lv_obj_set_style_bg_opa(uiDateGroup, 0, LV_CU_BASE_STYLE);
     lv_obj_set_style_border_color(uiDateGroup, lv_color_hex(0x000000),
                                   LV_CU_BASE_STYLE);
@@ -100,8 +95,6 @@ Home::Home() {
     lv_obj_set_pos(uiHourGroup, -64, -15);
     lv_obj_set_align(uiHourGroup, LV_ALIGN_CENTER);
     lv_obj_clear_flag(uiHourGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_color(uiHourGroup, lv_color_hex(0xFFFFFF),
-                              LV_CU_BASE_STYLE);
     lv_obj_set_style_bg_opa(uiHourGroup, 0, LV_CU_BASE_STYLE);
     lv_obj_set_style_border_color(uiHourGroup, lv_color_hex(0x000000),
                                   LV_CU_BASE_STYLE);
@@ -140,8 +133,6 @@ Home::Home() {
     lv_obj_set_pos(uiSecGroup, 92, 41);
     lv_obj_set_align(uiSecGroup, LV_ALIGN_CENTER);
     lv_obj_clear_flag(uiSecGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_color(uiSecGroup, lv_color_hex(0xFFFFFF),
-                              LV_CU_BASE_STYLE);
     lv_obj_set_style_bg_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
     lv_obj_set_style_border_color(uiSecGroup, lv_color_hex(0x000000),
                                   LV_CU_BASE_STYLE);
