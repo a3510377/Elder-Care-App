@@ -1,17 +1,18 @@
 #include "app/display.h"
 
-#include <TFT_eSPI.h>
-
 #include "app/home/home.h"
 
 #define APPS_LEN 1
 
 TFT_eSPI tft = TFT_eSPI();
 
+static lv_disp_draw_buf_t draw_buf;
+static lv_color_t buf[TFT_WIDTH * TFT_HEIGHT / 10];
+
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
-  uint32_t w = (area->x2 - area->x1 + 1);
-  uint32_t h = (area->y2 - area->y1 + 1);
+  uint32_t w = area->x2 - area->x1 + 1;
+  uint32_t h = area->y2 - area->y1 + 1;
 
   tft.startWrite();
   tft.setAddrWindow(area->x1, area->y1, w, h);
@@ -25,27 +26,29 @@ void Display::init() {
   lv_init();
 
   tft.begin();
-  tft.setRotation(1);  // Landscape orientation
+  tft.setRotation(1);
+  tft.invertDisplay(1);
+  lv_disp_draw_buf_init(&draw_buf, buf, NULL, TFT_WIDTH * TFT_HEIGHT / 10);
 
-  /* Initialize the display */
-  lv_disp_drv_t disp_drv;
+  // Initialize the display
+  static lv_disp_drv_t disp_drv;
   lv_disp_drv_init(&disp_drv);
-  disp_drv.hor_res = TFT_HEIGHT;
-  disp_drv.ver_res = TFT_WIDTH;
+  // Change the following line to your display resolution
+  disp_drv.hor_res = TFT_WIDTH;
+  disp_drv.ver_res = TFT_HEIGHT;
   disp_drv.flush_cb = my_disp_flush;
+  disp_drv.draw_buf = &draw_buf;
   lv_disp_drv_register(&disp_drv);
 
-  // https://docs.lvgl.io/latest/en/html/porting/indev.html
-  /* Initialize the (dummy) input device driver */
-  lv_indev_drv_t indev_drv;
-  lv_indev_drv_init(&indev_drv);
+  lv_disp_t *disp = lv_disp_get_default();
+  lv_theme_t *theme = lv_theme_default_init(
+      disp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+      true, LV_FONT_DEFAULT);
 
-  indev_drv.type = LV_INDEV_TYPE_ENCODER;
+  lv_disp_set_theme(disp, theme);
 }
 
 void Display::routine() {
-  lv_task_handler();
-
   int new_index = _now_app;
 
   return run_app();
@@ -81,7 +84,7 @@ void Display::setup_app() {
 }
 
 void Display::run_app() {
-  // _app->main_process();
+  _app->main_process();
 }
 
 void Display::kill_app() {

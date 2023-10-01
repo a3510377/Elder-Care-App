@@ -9,12 +9,11 @@ class Home: public BaseApp {
   void main_process();
   void update_clock();
 
-  lv_obj_t *uiPower;
-  lv_obj_t *uiTimeDate;
-  lv_obj_t *uiTimeHour;
-  lv_obj_t *uiTimeMinute;
-  lv_obj_t *uiTimeSeconds;
-  lv_obj_t *uiTimeSplit;
-  lv_obj_t *uiHeart;
-  lv_obj_t *uiHeartNum;
+  lv_obj_t *uiBatteryGroup, *uiBatteryIcon, *uiBatteryPercent;
+
+  lv_obj_t *uiTime;
+  lv_obj_t *uiDateGroup, *uiYear, *uiMonth, *uiDay, *uiDateSplit;
+  lv_obj_t *uiHourGroup, *uiHour1, *uiHour2;
+  lv_obj_t *uiMin;
+  lv_obj_t *uiSecGroup, *uiSecValue, *uiSecSplit;
 };

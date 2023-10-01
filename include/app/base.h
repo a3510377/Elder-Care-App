@@ -3,12 +3,14 @@
 #include <TFT_eSPI.h>
 #include <lvgl.h>
 
+#include "ui.h"
+
+#define LV_CU_BASE_STYLE LV_PART_MAIN | LV_STATE_DEFAULT
+
 class BaseApp {
  public:
   BaseApp() {
     _scr = lv_obj_create(NULL);
-    // (scr, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT,
-    //                                 LV_COLOR_BLACK);
     lv_obj_set_size(_scr, TFT_WIDTH, TFT_HEIGHT);
     lv_scr_load(_scr);
   }
@@ -20,7 +22,7 @@ class BaseApp {
   virtual void main_process(void) {}  // virtual
 
   inline void up_display(void) {
-    lv_task_handler();
+    lv_timer_handler();
   }
 
  protected:

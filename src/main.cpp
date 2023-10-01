@@ -18,6 +18,6 @@ void setup() {
 
 void loop() {
   pulse.read();
-  screen.run_app();
+  // screen.run_app();
   delay(20);
 }
