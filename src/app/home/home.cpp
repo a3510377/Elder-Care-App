@@ -159,49 +159,37 @@ Home::Home() {
 static void screenLoadEvent(lv_event_t *e) {
   Home *home = (Home *)lv_event_get_user_data(e);
 
-  leftAnimation(home->uiHourGroup, 0);
+  //
+  moveXAnimation(home->uiHourGroup, -100, 0);
+  //
+  moveXAnimation(home->uiDateGroup, 100, 0);
+  moveXAnimation(home->uiSecGroup, 100, 0);
+  moveXAnimation(home->uiMin, 100, 0);
+  //
+  moveYAnimation(home->uiBatteryGroup, -100, 0);
 }
 
-int32_t _ui_anim_callback_get_opacity(lv_anim_t *a) {
-  ui_anim_user_data_t *usr = (ui_anim_user_data_t *)a->user_data;
-  return lv_obj_get_style_opa(usr->target, 0);
+static void moveXAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
+  lv_anim_t animation;
+  lv_anim_init(&animation);
+  lv_anim_set_var(&animation, obj);
+  lv_anim_set_time(&animation, 500);
+  lv_anim_set_values(&animation, start, end);
+  lv_anim_set_exec_cb(&animation, animCallbackSetX);
+  lv_anim_set_path_cb(&animation, lv_anim_path_overshoot);
+  lv_anim_set_get_value_cb(&animation, &animCallbackGetX);
+  lv_anim_start(&animation);
 }
-
-void _ui_anim_callback_set_opacity(lv_anim_t *a, int32_t v) {
-  ui_anim_user_data_t *usr = (ui_anim_user_data_t *)a->user_data;
-  lv_obj_set_style_opa(usr->target, v, 0);
-}
-
-void _ui_anim_callback_set_x(lv_anim_t *a, int32_t v) {
-  ui_anim_user_data_t *usr = (ui_anim_user_data_t *)a->user_data;
-  lv_obj_set_x(usr->target, v);
-}
-void _ui_anim_callback_free_user_data(lv_anim_t *a) {
-  lv_mem_free(a->user_data);
-  a->user_data = NULL;
-}
-
-int32_t _ui_anim_callback_get_x(lv_anim_t *a) {
-  ui_anim_user_data_t *usr = (ui_anim_user_data_t *)a->user_data;
-  return lv_obj_get_x_aligned(usr->target);
-}
-
-static void leftAnimation(lv_obj_t *obj, int delay) {
-  ui_anim_user_data_t *animation =
-      (ui_anim_user_data_t *)lv_mem_alloc(sizeof(ui_anim_user_data_t));
-  animation->target = obj;
-  animation->val = -1;
-  lv_anim_t PropertyAnimation_0;
-  lv_anim_init(&PropertyAnimation_0);
-  lv_anim_set_time(&PropertyAnimation_0, 500);
-  lv_anim_set_user_data(&PropertyAnimation_0, animation);
-  lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_x);
-  lv_anim_set_values(&PropertyAnimation_0, 100, 0);
-  lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_overshoot);
-  lv_anim_set_deleted_cb(&PropertyAnimation_0,
-                         _ui_anim_callback_free_user_data);
-  lv_anim_set_get_value_cb(&PropertyAnimation_0, &_ui_anim_callback_get_x);
-  lv_anim_start(&PropertyAnimation_0);
+static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
+  lv_anim_t animation;
+  lv_anim_init(&animation);
+  lv_anim_set_var(&animation, obj);
+  lv_anim_set_time(&animation, 500);
+  lv_anim_set_values(&animation, start, end);
+  lv_anim_set_exec_cb(&animation, animCallbackSetY);
+  lv_anim_set_path_cb(&animation, lv_anim_path_overshoot);
+  lv_anim_set_get_value_cb(&animation, &animCallbackGetY);
+  lv_anim_start(&animation);
 }
 
 void Home::main_process() {}

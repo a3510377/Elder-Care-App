@@ -10,9 +10,10 @@ typedef struct _ui_anim_user_data_t {
   int32_t val;
 } ui_anim_user_data_t;
 
+void animCallbackSetX(void *, int32_t);
 int32_t animCallbackGetX(lv_anim_t *);
-void animCallbackSetOpacity(void *, int32_t);
-void animCallbackFreeUserData(lv_anim_t *);
+void animCallbackSetY(void *, int32_t);
+int32_t animCallbackGetY(lv_anim_t *);
 
 #ifdef __cplusplus
 extern "C" {

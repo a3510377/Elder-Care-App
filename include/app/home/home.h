@@ -3,7 +3,8 @@
 #include "../base.h"
 
 static void screenLoadEvent(lv_event_t *);
-static void leftAnimation(lv_obj_t *, int);
+static void moveXAnimation(lv_obj_t *, int32_t, int32_t);
+static void moveYAnimation(lv_obj_t *, int32_t, int32_t);
 
 class Home: public BaseApp {
  public:
