@@ -1,9 +1,22 @@
 #pragma once
 
+#include <lvgl.h>
+
+/** Describes an animation*/
+typedef struct _ui_anim_user_data_t {
+  lv_obj_t *target;
+  lv_img_dsc_t **imgset;
+  int32_t imgset_size;
+  int32_t val;
+} ui_anim_user_data_t;
+
+int32_t animCallbackGetX(lv_anim_t *);
+void animCallbackSetOpacity(void *, int32_t);
+void animCallbackFreeUserData(lv_anim_t *);
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <lvgl.h>
 
 LV_IMG_DECLARE(imageBattery);
 LV_FONT_DECLARE(fontNumberBig);

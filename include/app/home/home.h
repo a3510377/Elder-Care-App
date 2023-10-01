@@ -2,6 +2,9 @@
 
 #include "../base.h"
 
+static void screenLoadEvent(lv_event_t *);
+static void leftAnimation(lv_obj_t *, int);
+
 class Home: public BaseApp {
  public:
   Home();

@@ -27,7 +27,6 @@ void Display::init() {
 
   tft.begin();
   tft.setRotation(1);
-  tft.invertDisplay(1);
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, TFT_WIDTH * TFT_HEIGHT / 10);
 
   // Initialize the display
@@ -80,6 +79,7 @@ void Display::setup_app() {
       _app = new Home();
       break;
   }
+  lv_event_send(_app->scr, LV_EVENT_SCREEN_LOADED, NULL);
   Serial.println("setup app done");
 }
 

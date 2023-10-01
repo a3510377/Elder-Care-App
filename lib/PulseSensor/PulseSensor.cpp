@@ -68,11 +68,6 @@ void PulseSensor::read() {
 
   //  NOW IT'S TIME TO LOOK FOR THE HEART BEAT
   // signal surges up in value every time there is a pulse
-  Serial.print("signal:");
-  Serial.print(signal);
-  Serial.print(",threshold:");
-  Serial.print(_threshold);
-
   if (_n > 250) {  // avoid high frequency noise
     if ((signal > _threshold) && (_pulse == false) && (_n > (_IBI / 5) * 3)) {
       _pulse = true;  // set the Pulse flag when we think there is a pulse
@@ -135,8 +130,4 @@ void PulseSensor::read() {
     _pulse = false;
     _amp = 100;  // beat amplitude 1/10 of input range.
   }
-  Serial.print(",IBI:");
-  Serial.print(_IBI);
-  Serial.print(",BPM:");
-  Serial.println(getBeatsPerMinute());
 }
