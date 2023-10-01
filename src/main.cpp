@@ -8,8 +8,16 @@
 PulseSensor pulse(36, 21);
 Display screen;
 
+SemaphoreHandle_t lvgl_mutex = xSemaphoreCreateMutex();
+
 void TaskTFT(void *) {
-  while (1) lv_timer_handler();
+  while (1) {
+    xSemaphoreTake(lvgl_mutex, portMAX_DELAY);
+    screen.run_app();
+    lv_timer_handler();
+    xSemaphoreGive(lvgl_mutex);
+    vTaskDelay(1);
+  }
 }
 
 void setup() {
@@ -19,11 +27,10 @@ void setup() {
   screen.init();
   screen.setup_app();
 
-  xTaskCreatePinnedToCore(TaskTFT, "TaskTFT", 10240, NULL, 3, NULL, 1);
+  xTaskCreatePinnedToCore(TaskTFT, "TaskTFT", 20480, NULL, 3, NULL, 1);
 }
 
 void loop() {
   // pulse.read();
-  // screen.run_app();
   // delay(20);
 }
