@@ -107,7 +107,6 @@ Home::Home() {
     lv_label_set_text(uiHour1, "0");
     lv_obj_set_style_text_color(uiHour1, lv_color_hex(0x808080),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_opa(uiHour1, 255, LV_CU_BASE_STYLE);
     lv_obj_set_style_text_font(uiHour1, &fontNumberExtra, LV_CU_BASE_STYLE);
 
     uiHour2 = lv_label_create(uiHourGroup);
@@ -124,7 +123,6 @@ Home::Home() {
   lv_obj_set_align(uiMin, LV_ALIGN_CENTER);
   lv_label_set_text(uiMin, "00");
   lv_obj_set_style_text_color(uiMin, lv_color_hex(0x8880D5), LV_CU_BASE_STYLE);
-  lv_obj_set_style_text_opa(uiMin, 255, LV_CU_BASE_STYLE);
   lv_obj_set_style_text_font(uiMin, &fontNumberBig, LV_CU_BASE_STYLE);
 
   {
@@ -145,7 +143,6 @@ Home::Home() {
     lv_label_set_text(uiSecSplit, ":");
     lv_obj_set_style_text_color(uiSecSplit, lv_color_hex(0x808080),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_opa(uiSecSplit, 255, LV_CU_BASE_STYLE);
 
     uiSecValue = lv_label_create(uiSecGroup);
     lv_obj_set_size(uiSecValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
@@ -154,7 +151,6 @@ Home::Home() {
     lv_label_set_text(uiSecValue, "--");
     lv_obj_set_style_text_color(uiSecValue, lv_color_hex(0x9A9A9A),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_opa(uiSecValue, 255, LV_CU_BASE_STYLE);
   }
 
   // lv_obj_add_event_cb(_scr, _scr, LV_EVENT_ALL, NULL);
