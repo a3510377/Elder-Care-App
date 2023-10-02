@@ -89,19 +89,33 @@ void Network::handlerRoot(AsyncWebServerRequest *request) {
 
   request->send(
       200, "text/html",
-      "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta "
-      "name=viewport "
-      "content='width=device-width,initial-scale=1'><title>ElderCareWatch Wifi "
-      "設定</title></head><body><form action=/wifi_save><input list=ssid "
-      "length=32 placeholder=SSID><input type=password length=64 "
-      "placeholder=password><datalist "
-      "id=ssid></datalist></form></body><script>(()=>{const "
-      "e=document.getElementById('ssid');new "
+      "<!DOCTYPE html><html><head><title>ElderCareWatch Wifi 設定</title><meta "
+      "name='viewport' content='width=device-width, initial-scale=1' "
+      "/><style>html{font-family:Arial,sans-serif}h1{text-align:center;"
+      "background-color:#0a1128;font-size:1.8rem;color:white;padding:20px;"
+      "margin:0}body{margin:0}.card{background-color:white;box-shadow:2px 2px "
+      "12px 1px "
+      "rgba(140,140,140,.5)}form{padding:10px}input[type='submit']{border:none;"
+      "color:#fefcfb;background-color:#034078;padding:8px;margin-bottom:10px;"
+      "font-size:16px;width:100px;border-radius:4px;transition-duration:.4s;"
+      "cursor:pointer}input[type='submit']:hover{background-color:#0f5697}"
+      "input[type='text'],input[type='number']{width:50%;min-width:none;"
+      "padding:5px;margin:5px;border:1px solid "
+      "#ccc;border-radius:4px}label{font-size:1.2rem}</style></"
+      "head><body><h1>ElderCareWatch Wifi 設定</h1><div "
+      "style='padding:5%'><div class=card><form action=/ method=POST><label "
+      "for=ssid>SSID</label><input type=text list=sl id=ssid name=ssid /><br "
+      "/><label for=pass>Password</label><input type=text id=pass name=pass "
+      "/><br /><label for=ip>IP</label><input type=text id=ip name=ip "
+      "value=/><br /><label for=gateway>Gateway</label><input type=text "
+      "id=gateway name=gateway value=/><br /><input type=submit value=Submit "
+      "/></form><datalist id=sl></datalist></div></div><script>(()=>{const "
+      "e=document.getElementById('sl');new "
       "EventSource('/"
       "events').addEventListener('wifi_info',(({data:n})=>{e.innerHTML='',(n="
-      "JSON.parse(n)).forEach((({ssid})=>{var "
-      "t=document.createElement('option');t.value=ssid,e.appendChild(t)}))}))})"
-      "()</script></html>");
+      "JSON.parse(n)).forEach((({ssid:n})=>{var "
+      "t=document.createElement('option');t.value=n,e.appendChild(t)}))}))})();"
+      " </script></body></html>");
 }
 
 String Network::getScanWifiInfo() {
