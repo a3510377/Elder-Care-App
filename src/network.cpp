@@ -99,9 +99,9 @@ void Network::handlerRoot(AsyncWebServerRequest *request) {
       "e=document.getElementById('ssid');new "
       "EventSource('/"
       "events').addEventListener('wifi_info',(({data:n})=>{e.innerHTML='',(n="
-      "JSON.parse(n)).forEach((({value})=>{var "
-      "t=document.createElement('option');t.value=value,e.appendChild(t)}))}))}"
-      ")()</script></html>");
+      "JSON.parse(n)).forEach((({ssid})=>{var "
+      "t=document.createElement('option');t.value=ssid,e.appendChild(t)}))}))})"
+      "()</script></html>");
 }
 
 String Network::getScanWifiInfo() {
