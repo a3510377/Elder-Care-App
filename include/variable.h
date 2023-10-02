@@ -1,3 +1,24 @@
 #pragma once
 
 #define PULSE_SENSOR_PIN A0
+#define DNS_PORT 53
+
+#ifdef CONFIG_WIFI_CONFIG_PATH
+  #define WIFI_CONFIG_PATH CONFIG_WIFI_CONFIG_PATH
+#else
+  #ifndef WIFI_CONFIG_PATH
+    #define WIFI_CONFIG_PATH "/wifi_config"
+  #endif
+#endif
+
+#ifdef CONFIG_WIFI_DEFAULT_SSID
+  #define WIFI_DEFAULT_SSID CONFIG_WIFI_DEFAULT_SSID
+#else
+  #ifndef WIFI_DEFAULT_SSID
+    #define WIFI_DEFAULT_SSID "ElderCareWatch"
+  #endif
+#endif
+
+#ifdef CONFIG_WIFI_DEFAULT_PASSWORD
+  #define WIFI_DEFAULT_PASSWORD CONFIG_WIFI_DEFAULT_PASSWORD
+#endif

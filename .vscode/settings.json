@@ -298,6 +298,8 @@
     "ostream": "cpp",
     "cstdlib": "cpp",
     "new": "cpp",
-    "functional": "cpp"
+    "functional": "cpp",
+    "fstream": "cpp",
+    "sstream": "cpp"
   }
 }
