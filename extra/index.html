@@ -14,9 +14,16 @@
     </form>
   </body>
   <script>
+    const ssidEl = document.getElementById('ssid');
     const event = new EventSource('/events');
-    event.addEventListener('wifi_info', (s) => {
-      console.log(s);
+    event.addEventListener('wifi_info', ({ data }) => {
+      ssidEl.innerHTML = '';
+      data = JSON.parse(data);
+      data.forEach(({ ssid }) => {
+        var option = document.createElement('option');
+        option.value = ssid;
+        ssidEl.appendChild(option);
+      });
     });
   </script>
 </html>

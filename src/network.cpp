@@ -89,14 +89,19 @@ void Network::handlerRoot(AsyncWebServerRequest *request) {
 
   request->send(
       200, "text/html",
-      "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8' /><meta "
-      "name='viewport' content='width=device-width, initial-scale=1.0' "
-      "/><title>ElderCareWatch Wifi 設定</title></head><body><form "
-      "action='/wifi_save'><input list='ssid' length='32' placeholder='SSID' "
-      "/><input type='password' length='64' placeholder='password' /><datalist "
-      "id='ssid'></datalist></form></body><script>const event=new "
-      "EventSource('/events'); event.addEventListener('wifi_info', (s)=>{ "
-      "console.log(s);}); </script></html>");
+      "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta "
+      "name=viewport "
+      "content='width=device-width,initial-scale=1'><title>ElderCareWatch Wifi "
+      "設定</title></head><body><form action=/wifi_save><input list=ssid "
+      "length=32 placeholder=SSID><input type=password length=64 "
+      "placeholder=password><datalist "
+      "id=ssid></datalist></form></body><script>(()=>{const "
+      "e=document.getElementById('ssid');new "
+      "EventSource('/"
+      "events').addEventListener('wifi_info',(({data:n})=>{e.innerHTML='',(n="
+      "JSON.parse(n)).forEach((({value})=>{var "
+      "t=document.createElement('option');t.value=value,e.appendChild(t)}))}))}"
+      ")()</script></html>");
 }
 
 String Network::getScanWifiInfo() {
