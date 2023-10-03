@@ -207,7 +207,7 @@ WifiConfig Network::getWifiConfig() {
   WifiConfig config;
 
   if (SPIFFS.exists(WIFI_CONFIG_PATH)) {
-    File configFile = SPIFFS.open(WIFI_CONFIG_PATH, "r");
+    File configFile = SPIFFS.open(WIFI_CONFIG_PATH, FILE_READ);
     while (configFile.available()) {
       String line = configFile.readStringUntil('\n');
       int separatorIndex = line.indexOf(':');
@@ -226,7 +226,7 @@ WifiConfig Network::getWifiConfig() {
 }
 
 void Network::saveWifiConfig(WifiConfig config) {
-  File configFile = SPIFFS.open(WIFI_CONFIG_PATH, "w");
+  File configFile = SPIFFS.open(WIFI_CONFIG_PATH, FILE_WRITE);
   if (!configFile) {
     Serial.println(F("Error opening wifi config file for writing"));
     return;
