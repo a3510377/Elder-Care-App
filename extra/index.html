@@ -45,10 +45,8 @@
       input[type='submit']:hover {
         background-color: #0f5697;
       }
-      input[type='text'],
-      input[type='number'] {
-        width: 50%;
-        min-width: none;
+      input {
+        width: 90%;
         padding: 5px;
         margin: 5px;
         border: 1px solid #ccc;
@@ -62,27 +60,22 @@
   </head>
   <body>
     <h1>ElderCareWatch Wifi 設定</h1>
-    <div style="padding: 5%">
-      <div class="card">
-        <form action="/" method="POST">
-          <label for="ssid">SSID</label>
-          <input type="text" list="sl" id="ssid" name="ssid" />
-          <br />
-          <label for="pass">Password</label>
-          <input type="text" id="pass" name="pass" />
-          <br />
-          <label for="ip">IP</label>
-          <input type="text" id="ip" name="ip" value="" />
-          <br />
-          <label for="gateway">Gateway</label>
-          <input type="text" id="gateway" name="gateway" value="" />
-          <br />
-          <input type="submit" value="Submit" />
-        </form>
+    <div style="width: 100%">
+      <div style="margin: 20px auto; width: 90%; max-width: 800px">
+        <div class="card">
+          <form action="/" method="POST">
+            <label for="ssid">SSID</label>
+            <br />
+            <input type="text" list="sl" id="ssid" name="ssid" />
+            <br />
+            <label for="password">Password</label>
+            <br />
+            <input type="text" id="password" name="password" />
+            <input type="submit" value="Submit" />
+          </form>
 
-        <datalist id="sl">
-          <option value="awa"></option>
-        </datalist>
+          <datalist id="sl"></datalist>
+        </div>
       </div>
     </div>
     <script>

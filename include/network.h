@@ -24,17 +24,19 @@ class Network {
 
   void init(void);
 
-  bool setupConfigPortal(void);
   bool startConfigPortal(void);
-  bool startConfigPortal(char const *apName, char const *password);
-
   void handlerRoot(AsyncWebServerRequest *request);
-
+  void handlerPostRoot(AsyncWebServerRequest *request);
   String getScanWifiInfo(void);
+
   WifiConfig getWifiConfig(void);
+  void saveWifiConfig(WifiConfig config);
 
  protected:
   ulong _last_update_time;
   ulong _last_send_scan_time;
+  ulong _connect_start_time;
   ulong _config_portal_start_time;
+
+  String _ssid, _password, _old_ssid, _old_password;
 };
