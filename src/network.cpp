@@ -8,13 +8,28 @@
 #include "variable.h"
 
 void Network::init() {
-  WiFi.persistent(false);
-
   WifiConfig config = getWifiConfig();
   if (config.SSID == "") startConfigPortal();
+  else WiFi.begin(config.SSID, config.Password);
+
+  Serial.print("try connect to SSID: ");
+  Serial.print(config.SSID);
+  Serial.println(" ::::");
 }
 
-bool Network::startConfigPortal() {
+void Network::autoUpdateNTP() {
+  ulong now = millis();
+  if ((_last_update_NTP_time + 18e5 < now || !_last_update_NTP_time) &&
+      WiFi.isConnected()) {  // 30min
+    _last_update_NTP_time = now;
+    Serial.println("start");
+    configTime(NTP_TIMEZONE * 60 * 60, 0, "pool.ntp.org", "time.windows.com",
+               "time.google.com");
+    Serial.println("done");
+  }
+}
+
+void Network::startConfigPortal() {
   if (!WiFi.isConnected()) {
     WiFi.persistent(false);
     WiFi.disconnect();
@@ -64,12 +79,13 @@ bool Network::startConfigPortal() {
     request->send(404, "text/plain", "Not Fond!!");
   });
 
-  sse.reset(new AsyncEventSource("/events"));
+  if (sse != NULL) delete sse;
+  sse = new AsyncEventSource("/events");
   sse->onConnect([this](AsyncEventSourceClient *client) {
     client->send(NULL, "hello");
     client->send(getScanWifiInfo().c_str(), "wifi_info");
   });
-  server->addHandler(sse.get()).setFilter(ON_AP_FILTER);
+  server->addHandler(sse).setFilter(ON_AP_FILTER);
 
   server->begin();
   _config_portal_start_time = millis();
@@ -96,6 +112,7 @@ bool Network::startConfigPortal() {
         Serial.println(_password);
 
         WiFi.begin(_ssid, _password);
+        _connect_start_time = millis();
       }
 
       // 1 and 3 have STA enabled
@@ -115,11 +132,11 @@ bool Network::startConfigPortal() {
           WiFi.mode(WIFI_STA);
 
           if (status == WL_CONNECTED) {
-            server.~unique_ptr();
-            dnsServer.~unique_ptr();
-            sse.~unique_ptr();
+            server.reset();
+            dnsServer.reset();
+            sse->close();
 
-            saveWifiConfig(WifiConfig {_ssid, _password});
+            saveWifiConfig(WifiConfig {_old_ssid, _password});
 
             // stop root while loop
             break;
@@ -195,8 +212,16 @@ String Network::getScanWifiInfo() {
   return json;
 }
 
+static bool hasIP(String str) {
+  for (size_t i = 0; i < str.length(); i++) {
+    int c = str.charAt(i);
+    if (c != '.' && (c < '0' || c > '9')) return false;
+  }
+  return true;
+}
+
 static bool onApHandler(AsyncWebServerRequest *request) {
-  if (!request->host()) {
+  if (!hasIP(request->host())) {
     request->redirect("http://" + request->client()->localIP().toString());
     return true;
   }
@@ -215,6 +240,8 @@ WifiConfig Network::getWifiConfig() {
       if (separatorIndex != -1) {
         String key = line.substring(0, separatorIndex);
         String value = line.substring(separatorIndex + 1);
+
+        value.replace("\r", "");
 
         if (key == "SSID") config.SSID = value;
         else if (key == "Password") config.Password = value;

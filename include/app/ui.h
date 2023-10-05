@@ -2,6 +2,13 @@
 
 #include <lvgl.h>
 
+#define ICON_WIFI ""        // 0xe63e
+#define ICON_WIFI_FIND ""   // 0xeb31
+#define ICON_LANDSCAPE ""   // 0xe3f7
+#define ICON_BOLT ""        // 0xea0b
+#define ICON_FOOTPRINT ""   // 0xf87d
+#define ICON_THERMOSTAT ""  // 0xf076
+
 /** Describes an animation*/
 typedef struct _ui_anim_user_data_t {
   lv_obj_t *target;
@@ -19,7 +26,7 @@ int32_t animCallbackGetY(lv_anim_t *);
 extern "C" {
 #endif
 
-LV_IMG_DECLARE(imageBattery);
+LV_FONT_DECLARE(fontIcon);
 LV_FONT_DECLARE(fontNumberBig);
 LV_FONT_DECLARE(fontNumberExtra);
 

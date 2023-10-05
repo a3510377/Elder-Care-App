@@ -14,17 +14,19 @@ struct WifiConfig {
   String Password;
 };
 
+static bool hasIP(String str);
 static bool onApHandler(AsyncWebServerRequest *request);
 
 class Network {
  public:
   std::unique_ptr<DNSServer> dnsServer;
   std::unique_ptr<AsyncWebServer> server;
-  std::unique_ptr<AsyncEventSource> sse;
+  AsyncEventSource *sse;
 
   void init(void);
+  void autoUpdateNTP(void);
 
-  bool startConfigPortal(void);
+  void startConfigPortal(void);
   void handlerRoot(AsyncWebServerRequest *request);
   void handlerPostRoot(AsyncWebServerRequest *request);
   String getScanWifiInfo(void);
@@ -37,6 +39,8 @@ class Network {
   ulong _last_send_scan_time;
   ulong _connect_start_time;
   ulong _config_portal_start_time;
+
+  ulong _last_update_NTP_time;
 
   String _ssid, _password, _old_ssid, _old_password;
 };

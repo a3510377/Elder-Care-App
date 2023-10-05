@@ -301,6 +301,10 @@
     "functional": "cpp",
     "fstream": "cpp",
     "sstream": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "ui.h": "c",
+    "ctime": "cpp",
+    "arduino.h": "c",
+    "pgmspace.h": "c"
   }
 }

@@ -26,7 +26,7 @@ void Display::init() {
   lv_init();
 
   tft.begin();
-  tft.setRotation(1);
+  tft.setRotation(0);
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, TFT_WIDTH * TFT_HEIGHT / 10);
 
   // Initialize the display

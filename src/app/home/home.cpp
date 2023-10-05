@@ -1,157 +1,201 @@
 #include "app/home/home.h"
 
 #include <Arduino.h>
+#include <WiFi.h>
+
+#define range(low, item, hi) max(low, min(item, hi))
 
 Home::Home() {
-  lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
-
-  {  // battery
-    uiBatteryGroup = lv_obj_create(scr);
-    lv_obj_set_size(uiBatteryGroup, 50, 20);
-    lv_obj_set_pos(uiBatteryGroup, 0, -96);
-    lv_obj_set_align(uiBatteryGroup, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(uiBatteryGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_opa(uiBatteryGroup, 0, LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_color(uiBatteryGroup, lv_color_hex(0x000000),
-                                  LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_opa(uiBatteryGroup, 0, LV_CU_BASE_STYLE);
-
-    uiBatteryIcon = lv_img_create(uiBatteryGroup);
-    lv_img_set_src(uiBatteryIcon, &imageBattery);
-    lv_obj_set_size(uiBatteryIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiBatteryIcon, -14, 0);
-    lv_obj_set_align(uiBatteryIcon, LV_ALIGN_CENTER);
-    lv_obj_add_flag(uiBatteryIcon, LV_OBJ_FLAG_ADV_HITTEST);
-    lv_obj_clear_flag(uiBatteryIcon, LV_OBJ_FLAG_SCROLLABLE);
-
-    uiBatteryPercent = lv_label_create(uiBatteryGroup);
-    lv_obj_set_size(uiBatteryPercent, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiBatteryPercent, 10, 0);
-    lv_obj_set_align(uiBatteryPercent, LV_ALIGN_CENTER);
-    lv_label_set_text(uiBatteryPercent, "--%");
-    lv_obj_set_style_text_color(uiBatteryPercent, lv_color_hex(0xFFFFFF),
+  uiBatteryGroup = lv_obj_create(scr);
+  lv_obj_set_size(uiBatteryGroup, 50, 20);
+  lv_obj_set_pos(uiBatteryGroup, 0, -140);
+  lv_obj_set_align(uiBatteryGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(uiBatteryGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(uiBatteryGroup, lv_color_hex(0xFFFFFF),
+                            LV_CU_BASE_STYLE);
+  lv_obj_set_style_bg_opa(uiBatteryGroup, 0, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_color(uiBatteryGroup, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_opa(uiBatteryPercent, 255, LV_CU_BASE_STYLE);
-  }
+  lv_obj_set_style_border_opa(uiBatteryGroup, 0, LV_CU_BASE_STYLE);
+
+  uiBatteryIcon = lv_label_create(uiBatteryGroup);
+  lv_obj_set_size(uiBatteryIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiBatteryIcon, -14, -3);
+  lv_obj_set_align(uiBatteryIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(uiBatteryIcon, ICON_BOLT);
+  lv_obj_set_style_text_color(uiBatteryIcon, lv_color_hex(0xFF0000),
+                              LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiBatteryIcon, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiBatteryIcon, &fontIcon, LV_CU_BASE_STYLE);
+
+  uiBatteryPercent = lv_label_create(uiBatteryGroup);
+  lv_obj_set_size(uiBatteryPercent, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiBatteryPercent, 10, -2);
+  lv_obj_set_align(uiBatteryPercent, LV_ALIGN_CENTER);
+  lv_label_set_text(uiBatteryPercent, "20%");
+  lv_obj_set_style_text_color(uiBatteryPercent, lv_color_hex(0xFFFFFF),
+                              LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiBatteryPercent, 255, LV_CU_BASE_STYLE);
 
   uiTime = lv_obj_create(scr);
-  lv_obj_set_size(uiTime, 240, 105);
-  lv_obj_set_pos(uiTime, 0, -24);
+  lv_obj_set_size(uiTime, 240, 111);
+  lv_obj_set_pos(uiTime, 1, -54);
   lv_obj_set_align(uiTime, LV_ALIGN_CENTER);
   lv_obj_clear_flag(uiTime, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(uiTime, lv_color_hex(0xFFFFFF), LV_CU_BASE_STYLE);
   lv_obj_set_style_bg_opa(uiTime, 0, LV_CU_BASE_STYLE);
   lv_obj_set_style_border_color(uiTime, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
   lv_obj_set_style_border_opa(uiTime, 0, LV_CU_BASE_STYLE);
 
-  {  // date
-    uiDateGroup = lv_obj_create(uiTime);
-    lv_obj_set_size(uiDateGroup, 79, 43);
-    lv_obj_set_pos(uiDateGroup, 33, -25);
-    lv_obj_set_align(uiDateGroup, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(uiDateGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_opa(uiDateGroup, 0, LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_color(uiDateGroup, lv_color_hex(0x000000),
-                                  LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_opa(uiDateGroup, 0, LV_CU_BASE_STYLE);
-
-    uiYear = lv_label_create(uiDateGroup);
-    lv_obj_set_size(uiYear, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiYear, -12, -13);
-    lv_obj_set_align(uiYear, LV_ALIGN_CENTER);
-    lv_label_set_text(uiYear, "2023");
-    lv_obj_set_style_text_color(uiYear, lv_color_hex(0x808080),
+  uiDateGroup = lv_obj_create(uiTime);
+  lv_obj_set_size(uiDateGroup, 71, 43);
+  lv_obj_set_pos(uiDateGroup, 41, -27);
+  lv_obj_set_align(uiDateGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(uiDateGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(uiDateGroup, lv_color_hex(0xFFFFFF),
+                            LV_CU_BASE_STYLE);
+  lv_obj_set_style_bg_opa(uiDateGroup, 0, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_color(uiDateGroup, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_opa(uiYear, 255, LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_font(uiYear, &lv_font_montserrat_18,
-                               LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_opa(uiDateGroup, 0, LV_CU_BASE_STYLE);
 
-    uiMonth = lv_label_create(uiDateGroup);
-    lv_obj_set_size(uiMonth, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiMonth, -5, 8);
-    lv_obj_set_align(uiMonth, LV_ALIGN_CENTER);
-    lv_label_set_text(uiMonth, "00");
-    lv_obj_set_style_text_font(uiMonth, &lv_font_montserrat_18,
-                               LV_CU_BASE_STYLE);
+  uiYear = lv_label_create(uiDateGroup);
+  lv_obj_set_size(uiYear, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiYear, -10, -13);
+  lv_obj_set_align(uiYear, LV_ALIGN_CENTER);
+  lv_label_set_text(uiYear, "2033");
+  lv_obj_set_style_text_color(uiYear, lv_color_hex(0x808080), LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiYear, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiYear, &lv_font_montserrat_18, LV_CU_BASE_STYLE);
 
-    uiDay = lv_label_create(uiDateGroup);
-    lv_obj_set_size(uiDay, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiDay, 26, 8);
-    lv_obj_set_align(uiDay, LV_ALIGN_CENTER);
-    lv_label_set_text(uiDay, "00");
-    lv_obj_set_style_text_font(uiDay, &lv_font_montserrat_18, LV_CU_BASE_STYLE);
+  uiMonth = lv_label_create(uiDateGroup);
+  lv_obj_set_size(uiMonth, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiMonth, -5, 8);
+  lv_obj_set_align(uiMonth, LV_ALIGN_CENTER);
+  lv_label_set_text(uiMonth, "02");
+  lv_obj_set_style_text_font(uiMonth, &lv_font_montserrat_18, LV_CU_BASE_STYLE);
 
-    uiDateSplit = lv_label_create(uiDateGroup);
-    lv_obj_set_size(uiDateSplit, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiDateSplit, 10, 6);
-    lv_obj_set_align(uiDateSplit, LV_ALIGN_CENTER);
-    lv_label_set_text(uiDateSplit, "-");
-    lv_obj_set_style_text_font(uiDateSplit, &lv_font_montserrat_18,
-                               LV_CU_BASE_STYLE);
-  }
-  {
-    uiHourGroup = lv_obj_create(uiTime);
-    lv_obj_set_size(uiHourGroup, 118, 75);
-    lv_obj_set_pos(uiHourGroup, -64, -15);
-    lv_obj_set_align(uiHourGroup, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(uiHourGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_opa(uiHourGroup, 0, LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_color(uiHourGroup, lv_color_hex(0x000000),
-                                  LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_opa(uiHourGroup, 0, LV_CU_BASE_STYLE);
+  uiDay = lv_label_create(uiDateGroup);
+  lv_obj_set_size(uiDay, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiDay, 25, 8);
+  lv_obj_set_align(uiDay, LV_ALIGN_CENTER);
+  lv_label_set_text(uiDay, "30");
+  lv_obj_set_style_text_font(uiDay, &lv_font_montserrat_18, LV_CU_BASE_STYLE);
 
-    uiHour1 = lv_label_create(uiHourGroup);
-    lv_obj_set_size(uiHour1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiHour1, -30, 0);
-    lv_obj_set_align(uiHour1, LV_ALIGN_CENTER);
-    lv_label_set_text(uiHour1, "0");
-    lv_obj_set_style_text_color(uiHour1, lv_color_hex(0x808080),
+  uiDateSplit = lv_label_create(uiDateGroup);
+  lv_obj_set_size(uiDateSplit, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiDateSplit, 9, 6);
+  lv_obj_set_align(uiDateSplit, LV_ALIGN_CENTER);
+  lv_label_set_text(uiDateSplit, "-");
+  lv_obj_set_style_text_font(uiDateSplit, &lv_font_montserrat_18,
+                             LV_CU_BASE_STYLE);
+
+  uiHourGroup = lv_obj_create(uiTime);
+  lv_obj_set_size(uiHourGroup, 118, 75);
+  lv_obj_set_pos(uiHourGroup, -64, -15);
+  lv_obj_set_align(uiHourGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(uiHourGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(uiHourGroup, lv_color_hex(0xFFFFFF),
+                            LV_CU_BASE_STYLE);
+  lv_obj_set_style_bg_opa(uiHourGroup, 0, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_color(uiHourGroup, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
-    lv_obj_set_style_text_font(uiHour1, &fontNumberExtra, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_opa(uiHourGroup, 0, LV_CU_BASE_STYLE);
 
-    uiHour2 = lv_label_create(uiHourGroup);
-    lv_obj_set_size(uiHour2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiHour2, 31, 0);
-    lv_obj_set_align(uiHour2, LV_ALIGN_CENTER);
-    lv_label_set_text(uiHour2, "0");
-    lv_obj_set_style_text_font(uiHour2, &fontNumberExtra, LV_CU_BASE_STYLE);
-  }
+  uiHour1 = lv_label_create(uiHourGroup);
+  lv_obj_set_size(uiHour1, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiHour1, -25, 0);
+  lv_obj_set_align(uiHour1, LV_ALIGN_CENTER);
+  lv_label_set_text(uiHour1, "0");
+  lv_obj_set_style_text_color(uiHour1, lv_color_hex(0x808080),
+                              LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiHour1, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiHour1, &fontNumberExtra, LV_CU_BASE_STYLE);
+
+  uiHour2 = lv_label_create(uiHourGroup);
+  lv_obj_set_size(uiHour2, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiHour2, 34, 0);
+  lv_obj_set_align(uiHour2, LV_ALIGN_CENTER);
+  lv_label_set_text(uiHour2, "3");
+  lv_obj_set_style_text_font(uiHour2, &fontNumberExtra, LV_CU_BASE_STYLE);
 
   uiMin = lv_label_create(uiTime);
   lv_obj_set_size(uiMin, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(uiMin, 39, 25);
+  lv_obj_set_pos(uiMin, 47, 22);
   lv_obj_set_align(uiMin, LV_ALIGN_CENTER);
-  lv_label_set_text(uiMin, "00");
+  lv_label_set_text(uiMin, "20");
   lv_obj_set_style_text_color(uiMin, lv_color_hex(0x8880D5), LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiMin, 255, LV_CU_BASE_STYLE);
   lv_obj_set_style_text_font(uiMin, &fontNumberBig, LV_CU_BASE_STYLE);
 
-  {
-    uiSecGroup = lv_obj_create(uiTime);
-    lv_obj_set_size(uiSecGroup, 27, 15);
-    lv_obj_set_pos(uiSecGroup, 92, 41);
-    lv_obj_set_align(uiSecGroup, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(uiSecGroup, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_color(uiSecGroup, lv_color_hex(0x000000),
-                                  LV_CU_BASE_STYLE);
-    lv_obj_set_style_border_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
-
-    uiSecSplit = lv_label_create(uiSecGroup);
-    lv_obj_set_size(uiSecSplit, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiSecSplit, -9, 0);
-    lv_obj_set_align(uiSecSplit, LV_ALIGN_CENTER);
-    lv_label_set_text(uiSecSplit, ":");
-    lv_obj_set_style_text_color(uiSecSplit, lv_color_hex(0x808080),
+  uiSecGroup = lv_obj_create(uiTime);
+  lv_obj_set_size(uiSecGroup, 27, 15);
+  lv_obj_set_pos(uiSecGroup, 99, 41);
+  lv_obj_set_align(uiSecGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(uiSecGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(uiSecGroup, lv_color_hex(0xFFFFFF),
+                            LV_CU_BASE_STYLE);
+  lv_obj_set_style_bg_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_color(uiSecGroup, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
 
-    uiSecValue = lv_label_create(uiSecGroup);
-    lv_obj_set_size(uiSecValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-    lv_obj_set_pos(uiSecValue, 3, 0);
-    lv_obj_set_align(uiSecValue, LV_ALIGN_CENTER);
-    lv_label_set_text(uiSecValue, "--");
-    lv_obj_set_style_text_color(uiSecValue, lv_color_hex(0x9A9A9A),
-                                LV_CU_BASE_STYLE);
-  }
+  uiSecValue = lv_label_create(uiSecGroup);
+  lv_obj_set_size(uiSecValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiSecValue, 4, 0);
+  lv_obj_set_align(uiSecValue, LV_ALIGN_CENTER);
+  lv_label_set_text(uiSecValue, "20");
+  lv_obj_set_style_text_color(uiSecValue, lv_color_hex(0x9A9A9A),
+                              LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiSecValue, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiSecValue, &lv_font_montserrat_16,
+                             LV_CU_BASE_STYLE);
+
+  uiSecSplit = lv_label_create(uiSecGroup);
+  lv_obj_set_size(uiSecSplit, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiSecSplit, -11, -1);
+  lv_obj_set_align(uiSecSplit, LV_ALIGN_CENTER);
+  lv_label_set_text(uiSecSplit, ":");
+  lv_obj_set_style_text_color(uiSecSplit, lv_color_hex(0x808080),
+                              LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiSecSplit, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiSecSplit, &lv_font_montserrat_16,
+                             LV_CU_BASE_STYLE);
+
+  uiInfoGroup = lv_obj_create(scr);
+  lv_obj_set_size(uiInfoGroup, 105, 89);
+  lv_obj_set_pos(uiInfoGroup, -56, 98);
+  lv_obj_set_align(uiInfoGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(uiInfoGroup, LV_OBJ_FLAG_SCROLLABLE);
+
+  uiTemperatureIcon = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiTemperatureIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiTemperatureIcon, -32, 25);
+  lv_obj_set_align(uiTemperatureIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(uiTemperatureIcon, ICON_THERMOSTAT);
+  lv_obj_set_style_text_font(uiTemperatureIcon, &fontIcon, LV_CU_BASE_STYLE);
+
+  uiStepsIcon = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiStepsIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiStepsIcon, -32, 1);
+  lv_obj_set_align(uiStepsIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(uiStepsIcon, ICON_FOOTPRINT);
+  lv_obj_set_style_text_font(uiStepsIcon, &fontIcon, LV_CU_BASE_STYLE);
+
+  uiAltitudeIcon = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiAltitudeIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiAltitudeIcon, -31, -27);
+  lv_obj_set_align(uiAltitudeIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(uiAltitudeIcon, ICON_LANDSCAPE);
+  lv_obj_set_style_text_font(uiAltitudeIcon, &fontIcon, LV_CU_BASE_STYLE);
+
+  uiWiFiStatusIcon = lv_label_create(scr);
+  lv_obj_set_size(uiWiFiStatusIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiWiFiStatusIcon, 96, -144);
+  lv_obj_set_align(uiWiFiStatusIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(uiWiFiStatusIcon, ICON_WIFI_FIND);
+  lv_obj_set_style_text_font(uiWiFiStatusIcon, &fontIcon, LV_CU_BASE_STYLE);
 
   lv_obj_add_event_cb(scr, screenLoadEvent, LV_EVENT_SCREEN_LOADED, this);
 }
@@ -192,5 +236,31 @@ static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
   lv_anim_start(&animation);
 }
 
-void Home::main_process() {}
+void Home::main_process() {
+  struct tm now;
+  if (getLocalTime(&now)) {
+    char buf[4];
+    sprintf(buf, "%ld", 1900L + now.tm_year);
+    lv_label_set_text(uiYear, buf);
+
+    sprintf(buf, "%02d", range(0, now.tm_mon, 11) + 1);
+    lv_label_set_text(uiMonth, buf);
+
+    sprintf(buf, "%02d", range(1, now.tm_mday, 31));
+    lv_label_set_text(uiDay, buf);
+
+    String hours = String(range(0, now.tm_hour, 23));
+    lv_label_set_text(uiHour1, hours.length() > 1 ? &hours[1] : "0");
+    lv_label_set_text(uiHour2, &hours[0]);
+
+    sprintf(buf, "%02d", range(0, now.tm_min, 59));
+    lv_label_set_text(uiMin, buf);
+
+    sprintf(buf, "%02d", range(0, now.tm_sec, 60));
+    lv_label_set_text(uiSecValue, buf);
+  }
+  lv_label_set_text(uiWiFiStatusIcon,
+                    WiFi.isConnected() ? ICON_WIFI : ICON_WIFI_FIND);
+}
+
 void Home::update_clock() {}

@@ -23,7 +23,7 @@
   #define WIFI_DEFAULT_PASSWORD CONFIG_WIFI_DEFAULT_PASSWORD
 #endif
 
-const char PROGMEM HOME_PAGE[] =
+const char HOME_PAGE[] PROGMEM =
     "<!DOCTYPE html><html><head><title>ElderCareWatch Wifi 設定</title><meta "
     "name='viewport' content='width=device-width, "
     "initial-scale=1'/"

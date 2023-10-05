@@ -13,6 +13,7 @@ class Home: public BaseApp {
   void main_process();
   void update_clock();
 
+  lv_obj_t *uiWiFiStatusIcon;
   lv_obj_t *uiBatteryGroup, *uiBatteryIcon, *uiBatteryPercent;
 
   lv_obj_t *uiTime;
@@ -20,4 +21,6 @@ class Home: public BaseApp {
   lv_obj_t *uiHourGroup, *uiHour1, *uiHour2;
   lv_obj_t *uiMin;
   lv_obj_t *uiSecGroup, *uiSecValue, *uiSecSplit;
+
+  lv_obj_t *uiInfoGroup, *uiTemperatureIcon, *uiStepsIcon, *uiAltitudeIcon;
 };

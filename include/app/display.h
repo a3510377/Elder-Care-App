@@ -1,8 +1,6 @@
 #pragma once
 #include "base.h"
 
-void setup();
-
 class Display {
  public:
   void init(void);
