@@ -1,14 +1,21 @@
+#include "main.h"
+
+#include <Adafruit_ADXL345_U.h>
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
 #include <PulseSensor.h>
 #include <SPIFFS.h>
+#include <WebSocketsClient.h>
+#include <Wire.h>
 
 #include "app/display.h"
 #include "network.h"
 #include "variable.h"
 
-PulseSensor pulse(36, 21);
+WebSocketsClient webSocket;
+PulseSensor pulse(33, 27);
 Adafruit_BMP085 bmp;
+Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
 Display screen;
 Network network;
 
@@ -25,6 +32,9 @@ void TaskTFT(void *) {
 
 void setup() {
   Serial.begin(9600);
+  if (Wire.begin(15, 13)) {
+    Serial.println("i2c connected");
+  }
 
   if (!SPIFFS.begin(true)) {
     Serial.println(F("An error occurred while mounting SPIFFS"));
@@ -35,8 +45,14 @@ void setup() {
   if (!bmp.begin()) {
     Serial.println(
         "Could not find a valid BMP085/BMP180 sensor, check wiring!");
-    while (1) {
-    }
+    while (1)
+      ;
+  }
+
+  if (!accel.begin()) {
+    Serial.println("No ADXL345 sensor detected.");
+    while (1)
+      ;
   }
 
   analogReadResolution(10);
@@ -50,16 +66,32 @@ void setup() {
 }
 
 void loop() {
-  screen.run_app();
+  pulse.read();
+
+  sensors_event_t *event;
+  accel.getEvent(event);
+  StateInfo info = StateInfo {&pulse, &bmp, event};
+
+  screen.run_app(&info);
   network.autoUpdateNTP();
-  // pulse.read();
-  delay(200);
+
+  vTaskDelay(10);
   // Serial.print("Temperature = ");
   // Serial.print(bmp.readTemperature());
   // Serial.println(" *C");
 
+  // Serial.print("X: ");
+  // Serial.print(event.acceleration.x);
+  // Serial.print("  ");
+  // Serial.print("Y: ");
+  // Serial.print(event.acceleration.y);
+  // Serial.print("  ");
+  // Serial.print("Z: ");
+  // Serial.print(event.acceleration.z);
+  // Serial.print("  ");
+  // Serial.println("m/s^2 ");
   // Serial.print("Pressure = ");
-  // Serial.print(bmp.readPressure());
+  // Serial.print(bmp.readAltitude());
   // Serial.println(" Pa");
 
   // Serial.print("Altitude = ");

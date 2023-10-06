@@ -7,14 +7,17 @@
 
 #include "variable.h"
 
+static void taskStartConfigPortal(void *arg) {
+  Network *network = (Network *)arg;
+
+  network->startConfigPortal();
+}
+
 void Network::init() {
   WifiConfig config = getWifiConfig();
-  if (config.SSID == "") startConfigPortal();
-  else WiFi.begin(config.SSID, config.Password);
-
-  Serial.print("try connect to SSID: ");
-  Serial.print(config.SSID);
-  Serial.println(" ::::");
+  if (config.SSID == "") {
+    xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 512, this, 2, NULL);
+  } else WiFi.begin(config.SSID, config.Password);
 }
 
 void Network::autoUpdateNTP() {

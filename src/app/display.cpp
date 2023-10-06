@@ -50,7 +50,7 @@ void Display::init() {
 void Display::routine() {
   int new_index = _now_app;
 
-  return run_app();
+  return;
   // if (_app != NULL) {
   //   if (action != Action::BACK) return run_app();
   //   kill_app();
@@ -69,7 +69,6 @@ void Display::routine() {
 
   // kill_app();
   // setup_app();
-  // run_app();
 }
 
 void Display::setup_app() {
@@ -83,8 +82,8 @@ void Display::setup_app() {
   Serial.println("setup app done");
 }
 
-void Display::run_app() {
-  _app->main_process();
+void Display::run_app(StateInfo *info) {
+  _app->main_process(info);
 }
 
 void Display::kill_app() {

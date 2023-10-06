@@ -47,6 +47,8 @@ void PulseSensor::start() {
 
 void PulseSensor::read() {
   uint16_t signal = analogRead(_pin);
+  Serial.print("signal:");
+  Serial.println(signal);
 
   // keep track of the time in mS with this variable
   _sampleCounter += _sampleIntervalMs;

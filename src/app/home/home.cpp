@@ -1,5 +1,6 @@
 #include "app/home/home.h"
 
+#include <Adafruit_BMP085.h>
 #include <Arduino.h>
 #include <WiFi.h>
 
@@ -129,39 +130,14 @@ Home::Home() {
   lv_obj_set_style_text_opa(uiMin, 255, LV_CU_BASE_STYLE);
   lv_obj_set_style_text_font(uiMin, &fontNumberBig, LV_CU_BASE_STYLE);
 
-  uiSecGroup = lv_obj_create(uiTime);
-  lv_obj_set_size(uiSecGroup, 27, 15);
-  lv_obj_set_pos(uiSecGroup, 99, 41);
-  lv_obj_set_align(uiSecGroup, LV_ALIGN_CENTER);
-  lv_obj_clear_flag(uiSecGroup, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_set_style_bg_color(uiSecGroup, lv_color_hex(0xFFFFFF),
-                            LV_CU_BASE_STYLE);
-  lv_obj_set_style_bg_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
-  lv_obj_set_style_border_color(uiSecGroup, lv_color_hex(0x000000),
-                                LV_CU_BASE_STYLE);
-  lv_obj_set_style_border_opa(uiSecGroup, 0, LV_CU_BASE_STYLE);
-
-  uiSecValue = lv_label_create(uiSecGroup);
-  lv_obj_set_size(uiSecValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(uiSecValue, 4, 0);
-  lv_obj_set_align(uiSecValue, LV_ALIGN_CENTER);
-  lv_label_set_text(uiSecValue, "20");
-  lv_obj_set_style_text_color(uiSecValue, lv_color_hex(0x9A9A9A),
-                              LV_CU_BASE_STYLE);
-  lv_obj_set_style_text_opa(uiSecValue, 255, LV_CU_BASE_STYLE);
-  lv_obj_set_style_text_font(uiSecValue, &lv_font_montserrat_16,
-                             LV_CU_BASE_STYLE);
-
-  uiSecSplit = lv_label_create(uiSecGroup);
-  lv_obj_set_size(uiSecSplit, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(uiSecSplit, -11, -1);
-  lv_obj_set_align(uiSecSplit, LV_ALIGN_CENTER);
-  lv_label_set_text(uiSecSplit, ":");
-  lv_obj_set_style_text_color(uiSecSplit, lv_color_hex(0x808080),
-                              LV_CU_BASE_STYLE);
-  lv_obj_set_style_text_opa(uiSecSplit, 255, LV_CU_BASE_STYLE);
-  lv_obj_set_style_text_font(uiSecSplit, &lv_font_montserrat_16,
-                             LV_CU_BASE_STYLE);
+  uiSec = lv_label_create(scr);
+  lv_obj_set_size(uiSec, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiSec, 100, 0);
+  lv_obj_set_align(uiSec, LV_ALIGN_CENTER);
+  lv_label_set_text(uiSec, "20");
+  lv_obj_set_style_text_color(uiSec, lv_color_hex(0x9A9A9A), LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_opa(uiSec, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_font(uiSec, &lv_font_montserrat_16, LV_CU_BASE_STYLE);
 
   uiInfoGroup = lv_obj_create(scr);
   lv_obj_set_size(uiInfoGroup, 105, 89);
@@ -176,6 +152,12 @@ Home::Home() {
   lv_label_set_text(uiTemperatureIcon, ICON_THERMOSTAT);
   lv_obj_set_style_text_font(uiTemperatureIcon, &fontIcon, LV_CU_BASE_STYLE);
 
+  uiTemperatureValue = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiTemperatureValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiTemperatureValue, -20, 1);
+  lv_obj_set_align(uiTemperatureValue, LV_ALIGN_CENTER);
+  lv_label_set_text(uiTemperatureValue, "000");
+
   uiStepsIcon = lv_label_create(uiInfoGroup);
   lv_obj_set_size(uiStepsIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
   lv_obj_set_pos(uiStepsIcon, -32, 1);
@@ -183,12 +165,24 @@ Home::Home() {
   lv_label_set_text(uiStepsIcon, ICON_FOOTPRINT);
   lv_obj_set_style_text_font(uiStepsIcon, &fontIcon, LV_CU_BASE_STYLE);
 
+  uiStepsValue = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiStepsValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiStepsValue, -20, 1);
+  lv_obj_set_align(uiStepsValue, LV_ALIGN_CENTER);
+  lv_label_set_text(uiStepsValue, "000");
+
   uiAltitudeIcon = lv_label_create(uiInfoGroup);
   lv_obj_set_size(uiAltitudeIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(uiAltitudeIcon, -31, -27);
+  lv_obj_set_pos(uiAltitudeIcon, -32, -27);
   lv_obj_set_align(uiAltitudeIcon, LV_ALIGN_CENTER);
   lv_label_set_text(uiAltitudeIcon, ICON_LANDSCAPE);
   lv_obj_set_style_text_font(uiAltitudeIcon, &fontIcon, LV_CU_BASE_STYLE);
+
+  uiAltitudeValue = lv_label_create(uiInfoGroup);
+  lv_obj_set_size(uiAltitudeValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(uiAltitudeValue, -20, -27);
+  lv_obj_set_align(uiAltitudeValue, LV_ALIGN_CENTER);
+  lv_label_set_text(uiAltitudeValue, "");
 
   uiWiFiStatusIcon = lv_label_create(scr);
   lv_obj_set_size(uiWiFiStatusIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
@@ -207,7 +201,7 @@ static void screenLoadEvent(lv_event_t *e) {
   moveXAnimation(home->uiHourGroup, -100, 0);
   //
   moveXAnimation(home->uiDateGroup, 100, 0);
-  moveXAnimation(home->uiSecGroup, 100, 0);
+  moveXAnimation(home->uiSec, 100, 0);
   moveXAnimation(home->uiMin, 100, 0);
   //
   moveYAnimation(home->uiBatteryGroup, -100, 0);
@@ -236,10 +230,13 @@ static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
   lv_anim_start(&animation);
 }
 
-void Home::main_process() {
+void Home::main_process(StateInfo *info) {
   struct tm now;
   if (getLocalTime(&now)) {
     char buf[4];
+    sprintf(buf, "%02d", range(0, now.tm_sec, 60));
+    lv_label_set_text(uiSec, buf);
+
     sprintf(buf, "%ld", 1900L + now.tm_year);
     lv_label_set_text(uiYear, buf);
 
@@ -250,17 +247,21 @@ void Home::main_process() {
     lv_label_set_text(uiDay, buf);
 
     String hours = String(range(0, now.tm_hour, 23));
-    lv_label_set_text(uiHour1, hours.length() > 1 ? &hours[1] : "0");
-    lv_label_set_text(uiHour2, &hours[0]);
+    lv_label_set_text(uiHour1,
+                      hours.length() > 1 ? hours.substring(0, 1).c_str() : "0");
+    lv_label_set_text(uiHour2, hours.substring(1, 2).c_str());
 
     sprintf(buf, "%02d", range(0, now.tm_min, 59));
     lv_label_set_text(uiMin, buf);
+  }
 
-    sprintf(buf, "%02d", range(0, now.tm_sec, 60));
-    lv_label_set_text(uiSecValue, buf);
+  if (info != NULL) {
+    Adafruit_BMP085 *bpm085 = info->bpm085;
+    Serial.println(bpm085->readTemperature());
+
+    // lv_label_set_text(uiTemperatureValue,
+    //                   String(bpm085->readTemperature()).c_str());
   }
   lv_label_set_text(uiWiFiStatusIcon,
                     WiFi.isConnected() ? ICON_WIFI : ICON_WIFI_FIND);
 }
-
-void Home::update_clock() {}

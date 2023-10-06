@@ -10,8 +10,7 @@ class Home: public BaseApp {
  public:
   Home();
 
-  void main_process();
-  void update_clock();
+  void main_process(StateInfo *info);
 
   lv_obj_t *uiWiFiStatusIcon;
   lv_obj_t *uiBatteryGroup, *uiBatteryIcon, *uiBatteryPercent;
@@ -20,7 +19,9 @@ class Home: public BaseApp {
   lv_obj_t *uiDateGroup, *uiYear, *uiMonth, *uiDay, *uiDateSplit;
   lv_obj_t *uiHourGroup, *uiHour1, *uiHour2;
   lv_obj_t *uiMin;
-  lv_obj_t *uiSecGroup, *uiSecValue, *uiSecSplit;
+  lv_obj_t *uiSec;
 
   lv_obj_t *uiInfoGroup, *uiTemperatureIcon, *uiStepsIcon, *uiAltitudeIcon;
+
+  lv_obj_t *uiTemperatureValue, *uiStepsValue, *uiAltitudeValue;
 };
