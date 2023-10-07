@@ -305,6 +305,9 @@
     "ui.h": "c",
     "ctime": "cpp",
     "arduino.h": "c",
-    "pgmspace.h": "c"
+    "pgmspace.h": "c",
+    "bitset": "cpp",
+    "optional": "cpp",
+    "streambuf": "cpp"
   }
 }

@@ -16,7 +16,7 @@ static void taskStartConfigPortal(void *arg) {
 void Network::init() {
   WifiConfig config = getWifiConfig();
   if (config.SSID == "") {
-    xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 512, this, 2, NULL);
+    xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 4096, this, 2, NULL);
   } else WiFi.begin(config.SSID, config.Password);
 }
 

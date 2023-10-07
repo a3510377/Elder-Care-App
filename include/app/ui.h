@@ -4,10 +4,10 @@
 
 #define ICON_WIFI ""        // 0xe63e
 #define ICON_WIFI_FIND ""   // 0xeb31
-#define ICON_LANDSCAPE ""   // 0xe3f7
+#define ICON_HEART ""       // 0xe87d
 #define ICON_BOLT ""        // 0xea0b
-#define ICON_FOOTPRINT ""   // 0xf87d
-#define ICON_THERMOSTAT ""  // 0xf076
+#define ICON_FOOTPRINT ""   // 0xe566
+#define ICON_THERMOSTAT ""  // 0xe1ff
 
 /** Describes an animation*/
 typedef struct _ui_anim_user_data_t {

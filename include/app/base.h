@@ -10,9 +10,9 @@
 #define LV_CU_BASE_STYLE LV_PART_MAIN | LV_STATE_DEFAULT
 
 struct StateInfo {
-  PulseSensor *pulse;
-  Adafruit_BMP085 *bpm085;
-  sensors_event_t *accel;
+  PulseSensor pulse;
+  Adafruit_BMP085 bpm085;
+  sensors_event_t accel;
 };
 
 class BaseApp {

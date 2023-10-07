@@ -25,8 +25,13 @@ class PulseSensor {
     return _BPM;
   }
 
+  inline bool state() {
+    return _state;
+  }
+
  protected:
   uint8_t _pin, _switch_pin;
+  bool _state;
   volatile int _thresholdSetting;
 
   int _t, _n, _p, _threshold;

@@ -1,5 +1,3 @@
-#include "main.h"
-
 #include <Adafruit_ADXL345_U.h>
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
@@ -32,6 +30,10 @@ void TaskTFT(void *) {
 
 void setup() {
   Serial.begin(9600);
+  pinMode(NOTIFY_PIN, OUTPUT);
+  digitalWrite(NOTIFY_PIN, LOW);
+  delay(500);
+  digitalWrite(NOTIFY_PIN, HIGH);
   if (Wire.begin(15, 13)) {
     Serial.println("i2c connected");
   }
@@ -66,11 +68,15 @@ void setup() {
 }
 
 void loop() {
-  pulse.read();
+  if (touchRead(4) <= 50) {
+    if (!pulse.state()) pulse.start();
 
-  sensors_event_t *event;
-  accel.getEvent(event);
-  StateInfo info = StateInfo {&pulse, &bmp, event};
+    pulse.read();
+  } else if (pulse.state()) pulse.stop();
+
+  sensors_event_t event;
+  accel.getEvent(&event);
+  StateInfo info = StateInfo {pulse, bmp, event};
 
   screen.run_app(&info);
   network.autoUpdateNTP();

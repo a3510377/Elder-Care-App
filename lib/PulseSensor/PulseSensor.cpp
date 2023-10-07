@@ -9,7 +9,6 @@ refer to & Part of the program source:
 // Initialize PulseSensor
 void PulseSensor::begin() {
   pinMode(_switch_pin, OUTPUT);
-  start();
 
   _sampleIntervalMs = 2000UL / 1000;
   _thresholdSetting = _threshold;
@@ -38,11 +37,13 @@ void PulseSensor::_resetVariables() {
 // Turn off PulseSensor
 void PulseSensor::stop() {
   digitalWrite(_switch_pin, LOW);
+  _state = false;
 }
 
 // Turn on PulseSensor
 void PulseSensor::start() {
   digitalWrite(_switch_pin, HIGH);
+  _state = true;
 }
 
 void PulseSensor::read() {
