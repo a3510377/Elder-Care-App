@@ -313,8 +313,8 @@ void Home::main_process(StateInfo *info) {
 
     String hours = String(range(0, now.tm_hour, 23));
     lv_label_set_text(ui_hour1,
-                      hours.length() > 1 ? hours.substring(0, 1).c_str() : "0");
-    lv_label_set_text(ui_hour2, hours.substring(1, 2).c_str());
+                      hours.length() > 1 ? hours.substring(1, 2).c_str() : "0");
+    lv_label_set_text(ui_hour2, hours.substring(0, 1).c_str());
 
     sprintf(buf, "%02d", range(0, now.tm_min, 59));
     lv_label_set_text(ui_min, buf);

@@ -30,10 +30,12 @@ void TaskTFT(void *) {
 
 void setup() {
   Serial.begin(9600);
+
   pinMode(NOTIFY_PIN, OUTPUT);
   digitalWrite(NOTIFY_PIN, LOW);
   delay(500);
   digitalWrite(NOTIFY_PIN, HIGH);
+
   if (Wire.begin(15, 13)) {
     Serial.println("i2c connected");
   }
@@ -82,36 +84,25 @@ void loop() {
   network.autoUpdateNTP();
 
   vTaskDelay(10);
-  // Serial.print("Temperature = ");
-  // Serial.print(bmp.readTemperature());
-  // Serial.println(" *C");
 
-  // Serial.print("X: ");
-  // Serial.print(event.acceleration.x);
-  // Serial.print("  ");
-  // Serial.print("Y: ");
-  // Serial.print(event.acceleration.y);
-  // Serial.print("  ");
-  // Serial.print("Z: ");
-  // Serial.print(event.acceleration.z);
-  // Serial.print("  ");
-  // Serial.println("m/s^2 ");
-  // Serial.print("Pressure = ");
-  // Serial.print(bmp.readAltitude());
-  // Serial.println(" Pa");
+  float x = event.acceleration.x;
+  float y = event.acceleration.y;
+  float z = event.acceleration.z;
+  float totalAcceleration = sqrt(x * x + y * y + z * z);
 
-  // Serial.print("Altitude = ");
-  // Serial.print(bmp.readAltitude());
-  // Serial.println(" meters");
+  Serial.print("X:");
+  Serial.print(x);
+  Serial.print(",Y:");
+  Serial.print(y);
+  Serial.print(",Z:");
+  Serial.print(z);
+  Serial.print(",A:");
+  Serial.print(totalAcceleration);
 
-  // Serial.print("Pressure at sealevel (calculated) = ");
-  // Serial.print(bmp.readSealevelPressure());
-  // Serial.println(" Pa");
-
-  // Serial.print("Real altitude = ");
-  // Serial.print(bmp.readAltitude(102000));
-  // Serial.println(" meters");
-
-  // Serial.println();
-  // delay(500);
+  Serial.print(",GX:");
+  Serial.print(event.gyro.x);
+  Serial.print(",GY:");
+  Serial.print(event.gyro.y);
+  Serial.print(",GZ:");
+  Serial.println(event.gyro.z);
 }

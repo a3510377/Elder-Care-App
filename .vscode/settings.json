@@ -308,6 +308,7 @@
     "pgmspace.h": "c",
     "bitset": "cpp",
     "optional": "cpp",
-    "streambuf": "cpp"
+    "streambuf": "cpp",
+    "cmath": "cpp"
   }
 }

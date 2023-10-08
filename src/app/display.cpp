@@ -28,6 +28,7 @@ void Display::init() {
   tft.begin();
   tft.setRotation(0);
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, TFT_WIDTH * TFT_HEIGHT / 10);
+  pinMode(TFT_BL, OUTPUT);
 
   // Initialize the display
   static lv_disp_drv_t disp_drv;
@@ -90,6 +91,6 @@ void Display::kill_app() {
   if (_app != NULL) delete _app;
 }
 
-void Display::setBrightness(int value, int maxValue) {
-  // TODO
+void Display::setBrightness(int value) {
+  analogWrite(TFT_BL, value);
 }

@@ -9,7 +9,7 @@ class Display {
  public:
   void init(void);
   void routine(void);
-  void setBrightness(int value, int maxValue = 255);
+  void setBrightness(int value);
 
   void kill_app();
   void setup_app();
