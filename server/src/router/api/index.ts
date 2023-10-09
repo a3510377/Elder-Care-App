@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import users from './users';
 import devices from './devices';
 

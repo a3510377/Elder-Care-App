@@ -43,6 +43,135 @@ swagger({ openapi: '3.1.0' })(
             address: { type: 'string', example: '台南市XX區XX里XX之XX號' },
           },
         },
+
+        AirQualityData: {
+          type: 'object',
+          properties: {
+            type: { type: 'string', enum: ['10', '1.0', '2.5'] },
+            value: { type: 'number' },
+          },
+        },
+
+        DeviceType: {
+          type: 'number',
+          enum: [0, 1],
+          description: 'Device Type:\n* `0` - Watch\n* `1` - Env',
+        },
+        DeviceWatch: {
+          type: 'object',
+          properties: {
+            type: { $ref: '#/components/schemas/DeviceType', example: 0 },
+            stepCount: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { type: 'number' },
+              },
+            },
+            heartbeat: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { type: 'number' },
+              },
+            },
+            temp: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { type: 'number' },
+              },
+            },
+            warn: {
+              type: 'object',
+              description: 'warn log',
+              properties: {
+                heartbeat: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      date: { type: 'string' },
+                      value: { type: 'number' },
+                    },
+                  },
+                },
+                temp: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      date: { type: 'string' },
+                      value: { type: 'number' },
+                    },
+                  },
+                },
+                fall: { type: 'array', items: { type: 'string' } },
+              },
+            },
+          },
+        },
+        DeviceEnv: {
+          type: 'object',
+          properties: {
+            type: { $ref: '#/components/schemas/DeviceType', example: 1 },
+            airQuality: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { $ref: '#/components/schemas/AirQualityData' },
+              },
+            },
+            humidity: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { type: 'number' },
+              },
+            },
+            temp: {
+              type: 'object',
+              additionalProperties: {
+                type: 'array',
+                description: 'event minute',
+                items: { type: 'number' },
+              },
+            },
+            warn: {
+              type: 'object',
+              description: 'warn log',
+              properties: {
+                airQuality: {
+                  type: 'array',
+                  items: {
+                    allOf: [
+                      { $ref: '#/components/schemas/AirQualityData' },
+                      {
+                        type: 'object',
+                        properties: { date: { type: 'string' } },
+                      },
+                    ],
+                  },
+                },
+                harmfulGas: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      date: { type: 'string' },
+                      value: { type: 'number' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   },

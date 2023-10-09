@@ -22,12 +22,11 @@ export const readUserFile = () => {
 export const createUser = (name: string, address: string): IUser => {
   const data = readUserFile();
   const id = nextLastUserID();
-  const baseData = { name, address, devices: [] };
 
-  data[id] = baseData;
+  data[id] = { name, address, devices: [] };
   writeJsonFile(USERS_DATA_PATH, data);
 
-  return { ...baseData, id };
+  return { ...data[id], id };
 };
 
 export const getUsers = (): IUser[] => {

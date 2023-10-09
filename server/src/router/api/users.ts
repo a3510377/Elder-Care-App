@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { HttpStatus, ResponseStatus, sendResponse } from '..';
 import { createUser, getUserFromID, getUsers } from '@/data/user';
 
