@@ -1,6 +1,7 @@
 #include <Adafruit_ADXL345_U.h>
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
+#include <FallDetection.h>
 #include <PulseSensor.h>
 #include <SPIFFS.h>
 #include <WebSocketsClient.h>
@@ -14,6 +15,7 @@ WebSocketsClient webSocket;
 PulseSensor pulse(33, 27);
 Adafruit_BMP085 bmp;
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
+FallDetection fallDetection;
 Display screen;
 Network network;
 
@@ -59,8 +61,6 @@ void setup() {
       ;
   }
 
-  analogReadResolution(10);
-
   network.init();
   pulse.begin();
   screen.init();
@@ -78,31 +78,11 @@ void loop() {
 
   sensors_event_t event;
   accel.getEvent(&event);
-  StateInfo info = StateInfo {pulse, bmp, event};
+  fallDetection.loop(event);
+  StateInfo info = StateInfo {pulse, bmp, fallDetection, event};
 
   screen.run_app(&info);
   network.autoUpdateNTP();
 
   vTaskDelay(10);
-
-  float x = event.acceleration.x;
-  float y = event.acceleration.y;
-  float z = event.acceleration.z;
-  float totalAcceleration = sqrt(x * x + y * y + z * z);
-
-  Serial.print("X:");
-  Serial.print(x);
-  Serial.print(",Y:");
-  Serial.print(y);
-  Serial.print(",Z:");
-  Serial.print(z);
-  Serial.print(",A:");
-  Serial.print(totalAcceleration);
-
-  Serial.print(",GX:");
-  Serial.print(event.gyro.x);
-  Serial.print(",GY:");
-  Serial.print(event.gyro.y);
-  Serial.print(",GZ:");
-  Serial.println(event.gyro.z);
 }

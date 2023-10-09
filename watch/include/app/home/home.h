@@ -34,9 +34,9 @@ class Home: public BaseApp {
   lv_obj_t *ui_secSplit;
 
   lv_obj_t *ui_Info;
-  lv_obj_t *ui_altitudeGroup;
-  lv_obj_t *ui_altitudeIcon;
-  lv_obj_t *ui_altitudeValue;
+  lv_obj_t *ui_heartGroup;
+  lv_obj_t *ui_heartIcon;
+  lv_obj_t *ui_heartValue;
 
   lv_obj_t *ui_stepsGroup;
   lv_obj_t *ui_stepsIcon;

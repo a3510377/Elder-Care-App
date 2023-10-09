@@ -3,6 +3,9 @@
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
 #include <WiFi.h>
+#include <esp_adc_cal.h>
+
+#include "variable.h"
 
 #define range(low, item, hi) max(low, min(item, hi))
 
@@ -172,27 +175,27 @@ Home::Home() {
   lv_obj_set_align(ui_Info, LV_ALIGN_CENTER);
   lv_obj_clear_flag(ui_Info, LV_OBJ_FLAG_SCROLLABLE);
 
-  ui_altitudeGroup = lv_obj_create(ui_Info);
-  lv_obj_set_size(ui_altitudeGroup, 75, 22);
-  lv_obj_set_pos(ui_altitudeGroup, 0, -29);
-  lv_obj_set_align(ui_altitudeGroup, LV_ALIGN_CENTER);
-  lv_obj_clear_flag(ui_altitudeGroup, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_set_style_border_color(ui_altitudeGroup, lv_color_hex(0x000000),
+  ui_heartGroup = lv_obj_create(ui_Info);
+  lv_obj_set_size(ui_heartGroup, 75, 22);
+  lv_obj_set_pos(ui_heartGroup, 0, -29);
+  lv_obj_set_align(ui_heartGroup, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(ui_heartGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_border_color(ui_heartGroup, lv_color_hex(0x000000),
                                 LV_CU_BASE_STYLE);
-  lv_obj_set_style_border_opa(ui_altitudeGroup, 0, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_opa(ui_heartGroup, 0, LV_CU_BASE_STYLE);
 
-  ui_altitudeIcon = lv_label_create(ui_altitudeGroup);
-  lv_obj_set_size(ui_altitudeIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(ui_altitudeIcon, -27, 1);
-  lv_obj_set_align(ui_altitudeIcon, LV_ALIGN_CENTER);
-  lv_label_set_text(ui_altitudeIcon, ICON_HEART);
-  lv_obj_set_style_text_font(ui_altitudeIcon, &fontIcon, LV_CU_BASE_STYLE);
+  ui_heartIcon = lv_label_create(ui_heartGroup);
+  lv_obj_set_size(ui_heartIcon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(ui_heartIcon, -27, 1);
+  lv_obj_set_align(ui_heartIcon, LV_ALIGN_CENTER);
+  lv_label_set_text(ui_heartIcon, ICON_HEART);
+  lv_obj_set_style_text_font(ui_heartIcon, &fontIcon, LV_CU_BASE_STYLE);
 
-  ui_altitudeValue = lv_label_create(ui_altitudeGroup);
-  lv_obj_set_size(ui_altitudeValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-  lv_obj_set_pos(ui_altitudeValue, 10, 1);
-  lv_obj_set_align(ui_altitudeValue, LV_ALIGN_RIGHT_MID);
-  lv_label_set_text(ui_altitudeValue, "0");
+  ui_heartValue = lv_label_create(ui_heartGroup);
+  lv_obj_set_size(ui_heartValue, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(ui_heartValue, 10, 1);
+  lv_obj_set_align(ui_heartValue, LV_ALIGN_RIGHT_MID);
+  lv_label_set_text(ui_heartValue, "0");
 
   ui_stepsGroup = lv_obj_create(ui_Info);
   lv_obj_set_size(ui_stepsGroup, 75, 22);
@@ -295,6 +298,15 @@ static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
   lv_anim_start(&animation);
 }
 
+uint32_t readADC(int ADC_Raw) {
+  esp_adc_cal_characteristics_t adc_chars;
+
+  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100,
+                           &adc_chars);
+
+  return esp_adc_cal_raw_to_voltage(ADC_Raw, &adc_chars);
+}
+
 void Home::main_process(StateInfo *info) {
   struct tm now;
   char buf[4];
@@ -311,19 +323,26 @@ void Home::main_process(StateInfo *info) {
     sprintf(buf, "%02d", range(1, now.tm_mday, 31));
     lv_label_set_text(ui_day, buf);
 
-    String hours = String(range(0, now.tm_hour, 23));
-    lv_label_set_text(ui_hour1,
-                      hours.length() > 1 ? hours.substring(1, 2).c_str() : "0");
-    lv_label_set_text(ui_hour2, hours.substring(0, 1).c_str());
+    int hour = range(0, now.tm_hour, 23);
+    lv_label_set_text(ui_hour1, String(int(hour / 10)).c_str());
+    lv_label_set_text(ui_hour2, String(hour % 10).c_str());
 
     sprintf(buf, "%02d", range(0, now.tm_min, 59));
     lv_label_set_text(ui_min, buf);
   }
 
-  if (info != NULL) {
-    sprintf(buf, "%02.1f", info->bpm085.readTemperature());
-    lv_label_set_text(ui_temperatureValue, buf);
-  }
+  // if (info != NULL) {
+  //   sprintf(buf, "%02.1f", info->bpm085.readTemperature());
+  //   lv_label_set_text(ui_temperatureValue, buf);
+  // }
+  float temperature = readADC(analogRead(LM35_PIN)) / 91;
+  sprintf(buf, "%02.1f", temperature);
+  lv_label_set_text(ui_temperatureValue, info->pulse.state() ? buf : "-");
+
+  float heart = range(60, int(info->pulse.getBeatsPerMinute()), 110);
+  lv_label_set_text(ui_heartValue,
+                    info->pulse.state() ? String(heart).c_str() : "-");
+
   lv_label_set_text(ui_WiFiStatusIcon,
                     WiFi.isConnected() ? ICON_WIFI : ICON_WIFI_FIND);
 }
