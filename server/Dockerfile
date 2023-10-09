@@ -10,8 +10,10 @@ FROM alpine:latest AS docs
 
 WORKDIR /app
 RUN apk add --no-cache --update nodejs yarn
+COPY --from=builder /app .
+COPY . .
 RUN yarn install
-RUN yarn swagger
+RUN yarn run swagger
 
 FROM alpine:latest
 
