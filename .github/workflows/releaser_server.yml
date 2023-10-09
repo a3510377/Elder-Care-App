@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [server]
+    paths: [server, .github/workflows]
   release:
     types: [created]
 
