@@ -4,14 +4,12 @@
 #include <FallDetection.h>
 #include <PulseSensor.h>
 #include <SPIFFS.h>
-#include <WebSocketsClient.h>
 #include <Wire.h>
 
 #include "app/display.h"
 #include "network.h"
 #include "variable.h"
 
-WebSocketsClient webSocket;
 PulseSensor pulse(33, 27);
 Adafruit_BMP085 bmp;
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
@@ -39,7 +37,7 @@ void setup() {
   digitalWrite(NOTIFY_PIN, HIGH);
 
   if (Wire.begin(15, 13)) {
-    Serial.println("i2c connected");
+    Serial.println(F("i2c connected"));
   }
 
   if (!SPIFFS.begin(true)) {
@@ -50,13 +48,13 @@ void setup() {
 
   if (!bmp.begin()) {
     Serial.println(
-        "Could not find a valid BMP085/BMP180 sensor, check wiring!");
+        F("Could not find a valid BMP085/BMP180 sensor, check wiring!"));
     while (1)
       ;
   }
 
   if (!accel.begin()) {
-    Serial.println("No ADXL345 sensor detected.");
+    Serial.println(F("No ADXL345 sensor detected."));
     while (1)
       ;
   }

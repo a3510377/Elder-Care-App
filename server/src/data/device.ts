@@ -1,5 +1,6 @@
 import { readJsonFile, writeJsonFile } from '@/utils/file';
-import { DEVICES_DATA_PATH, init, nextLastDeviceID } from '.';
+import { DEVICES_DATA_PATH, USERS_DATA_PATH, init, nextLastDeviceID } from '.';
+import { readUserFile } from './user';
 
 export type IFileDevices = { [device_id: string]: IFileDevice };
 
@@ -21,27 +22,29 @@ export interface IAirQualityData {
 export interface IFileDeviceWatch {
   type: 0;
 
+  user_id: string;
   stepCount?: { [date: DateType]: number[] }; // every minute
   heartbeat?: { [date: DateType]: number[] }; // every minute
   temp?: { [date: DateType]: number[] }; // every minute
 
   warn: {
-    heartbeat?: { date: Date; value: number }[];
-    temp?: { date: Date; value: number }[];
-    fall?: Date[];
+    heartbeat?: { date: string; value: number }[];
+    temp?: { date: string; value: number }[];
+    fall?: string[];
   };
 }
 
 export interface IFileDeviceEnv {
   type: 1;
 
+  user_id: string;
   airQuality?: { [date: DateType]: IAirQualityData[] }; // every minute
   humidity?: { [date: DateType]: number[] }; // every minute
   temp?: { [date: DateType]: number[] }; // every minute
 
   warn: {
-    airQuality?: ({ date: Date } & IAirQualityData)[];
-    harmfulGas?: { date: Date; value: number }[];
+    airQuality?: ({ date: string } & IAirQualityData)[];
+    harmfulGas?: { date: string; value: number }[];
   };
 }
 
@@ -51,12 +54,20 @@ export const readDeviceFile = () => {
   return readJsonFile<IFileDevices>(DEVICES_DATA_PATH);
 };
 
-export const createDevice = (type: DeviceTypes) => {
+export const createDevice = (type: DeviceTypes, user_id: string) => {
+  const users = readUserFile();
   const data = readDeviceFile();
   const id = nextLastDeviceID();
+  const user = users[user_id];
 
-  data[id] = { type, warn: {} };
+  if (!user) {
+    throw new Error(`User ${user_id} does not exist`);
+  }
 
+  data[id] = { type, user_id, warn: {} };
+  user.devices.push(id);
+
+  writeJsonFile(USERS_DATA_PATH, user);
   writeJsonFile(DEVICES_DATA_PATH, data);
 
   return { ...data[id], id };
@@ -66,4 +77,12 @@ export const getDeviceFromID = (id: string): IDevice | undefined => {
   const device = readDeviceFile()[id];
 
   return device ? { id, ...device } : void 0;
+};
+
+export const writeDeviceFromID = (id: string, data: IDevice) => {
+  const rawData = readDeviceFile();
+
+  rawData[id] = data;
+
+  writeJsonFile(DEVICES_DATA_PATH, rawData);
 };

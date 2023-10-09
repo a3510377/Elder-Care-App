@@ -25,10 +25,10 @@ void Network::autoUpdateNTP() {
   if ((_last_update_NTP_time + 18e5 < now || !_last_update_NTP_time) &&
       WiFi.isConnected()) {  // 30min
     _last_update_NTP_time = now;
-    Serial.println("start");
+    Serial.println(F("start"));
     configTime(NTP_TIMEZONE * 60 * 60, 0, "pool.ntp.org", "time.windows.com",
                "time.google.com");
-    Serial.println("done");
+    Serial.println(F("done"));
   }
 }
 
@@ -79,11 +79,11 @@ void Network::startConfigPortal() {
   server->onNotFound([](AsyncWebServerRequest *request) {
     if (onApHandler(request)) return;
 
-    request->send(404, "text/plain", "Not Fond!!");
+    request->send(404, F("text/plain"), F("Not Fond!!"));
   });
 
   if (sse != NULL) delete sse;
-  sse = new AsyncEventSource("/events");
+  sse = new AsyncEventSource(F("/events"));
   sse->onConnect([this](AsyncEventSourceClient *client) {
     client->send(NULL, "hello");
     client->send(getScanWifiInfo().c_str(), "wifi_info");
@@ -109,9 +109,9 @@ void Network::startConfigPortal() {
 
         if (WiFi.SSID() != "") WiFi.disconnect();
 
-        Serial.print("try connect to SSID: ");
+        Serial.print(F("try connect to SSID: "));
         Serial.print(_ssid);
-        Serial.print(", Password: ");
+        Serial.print(F(", Password: "));
         Serial.println(_password);
 
         WiFi.begin(_ssid, _password);
@@ -158,7 +158,7 @@ void Network::handlerPostRoot(AsyncWebServerRequest *request) {
   if (onApHandler(request)) return;
 
   if (_ssid != "") {
-    request->send(200, "text/plain;charset=utf-8",
+    request->send(200, F("text/plain;charset=utf-8"),
                   "錯誤，當前正在嘗試連接至 " + _ssid + " 請稍後...");
     return;
   }
@@ -167,13 +167,14 @@ void Network::handlerPostRoot(AsyncWebServerRequest *request) {
     _ssid = request->getParam("ssid", true)->value();
   }
   if (_ssid == "") {
-    request->send(400, "text/plain;charset=utf-8", F("錯誤，ssid 是必要參數"));
+    request->send(400, F("text/plain;charset=utf-8"),
+                  F("錯誤，ssid 是必要參數"));
     return;
   }
   if (request->hasParam("password", true)) {
     _password = request->getParam("password", true)->value();
   }
-  request->send(200, "text/plain;charset=utf-8",
+  request->send(200, F("text/plain;charset=utf-8"),
                 "操作完成，正在嘗試連線至: " + _ssid);
 }
 
@@ -182,7 +183,7 @@ void Network::handlerPostRoot(AsyncWebServerRequest *request) {
 void Network::handlerRoot(AsyncWebServerRequest *request) {
   if (onApHandler(request)) return;
 
-  request->send(200, "text/html;charset=utf-8", HOME_PAGE);
+  request->send(200, F("text/html;charset=utf-8"), HOME_PAGE);
 }
 
 String Network::getScanWifiInfo() {
@@ -195,10 +196,10 @@ String Network::getScanWifiInfo() {
       if (i) json += ",";
       String ssid = WiFi.SSID(i);
 
-      ssid.replace("\"", "\\\"");
+      ssid.replace(F("\""), F("\\\""));
 
-      json += "{";
-      json += "\"rssi\":" + String(WiFi.RSSI(i));
+      json += F("{\"rssi\":");
+      json += String(WiFi.RSSI(i));
       json += ",\"ssid\":\"" + ssid + "\"";
       json += ",\"channel\":" + String(WiFi.channel(i));
       json += ",\"secure\":" + String(WiFi.encryptionType(i));
@@ -262,9 +263,9 @@ void Network::saveWifiConfig(WifiConfig config) {
     return;
   }
 
-  configFile.print("SSID:");
+  configFile.print(F("SSID:"));
   configFile.println(config.SSID);
-  configFile.print("Password:");
+  configFile.print(F("Password:"));
   configFile.println(config.Password);
   configFile.close();
 }

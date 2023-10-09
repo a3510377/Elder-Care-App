@@ -73,14 +73,14 @@ void Display::routine() {
 }
 
 void Display::setup_app() {
-  Serial.println("setup app");
+  Serial.println(F("setup app"));
   switch (_now_app) {
     case 0:
       _app = new Home();
       break;
   }
   lv_event_send(_app->scr, LV_EVENT_SCREEN_LOADED, NULL);
-  Serial.println("setup app done");
+  Serial.println(F("setup app done"));
 }
 
 void Display::run_app(StateInfo *info) {

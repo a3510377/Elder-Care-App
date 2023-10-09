@@ -10,9 +10,9 @@ swagger({ openapi: '3.1.0' })(
       version: '0.0.1',
       description: 'This is a REST API For Elder Care App',
     },
-    server: [
+    servers: [
       {
-        url: 'http://localhost:8080',
+        url: 'http://localhost:8000',
         description: 'Internal server for testing',
       },
     ],
@@ -50,6 +50,22 @@ swagger({ openapi: '3.1.0' })(
             type: { type: 'string', enum: ['10', '1.0', '2.5'] },
             value: { type: 'number' },
           },
+        },
+
+        RegisterDeviceData: {
+          type: 'object',
+          required: ['type', 'user_id'],
+          properties: {
+            type: { $ref: '#/components/schemas/DeviceType' },
+            user_id: { type: 'string', example: '0' },
+          },
+        },
+
+        Device: {
+          oneOf: [
+            { $ref: '#/components/schemas/DeviceWatch' },
+            { $ref: '#/components/schemas/DeviceEnv' },
+          ],
         },
 
         DeviceType: {
@@ -94,7 +110,10 @@ swagger({ openapi: '3.1.0' })(
                   items: {
                     type: 'object',
                     properties: {
-                      date: { type: 'string' },
+                      date: {
+                        type: 'string',
+                        example: '2023-09-30T16:00:00.000Z',
+                      },
                       value: { type: 'number' },
                     },
                   },
@@ -104,7 +123,10 @@ swagger({ openapi: '3.1.0' })(
                   items: {
                     type: 'object',
                     properties: {
-                      date: { type: 'string' },
+                      date: {
+                        type: 'string',
+                        example: '2023-09-30T16:00:00.000Z',
+                      },
                       value: { type: 'number' },
                     },
                   },
@@ -153,7 +175,12 @@ swagger({ openapi: '3.1.0' })(
                       { $ref: '#/components/schemas/AirQualityData' },
                       {
                         type: 'object',
-                        properties: { date: { type: 'string' } },
+                        properties: {
+                          date: {
+                            type: 'string',
+                            example: '2023-09-30T16:00:00.000Z',
+                          },
+                        },
                       },
                     ],
                   },
@@ -163,7 +190,10 @@ swagger({ openapi: '3.1.0' })(
                   items: {
                     type: 'object',
                     properties: {
-                      date: { type: 'string' },
+                      date: {
+                        type: 'string',
+                        example: '2023-09-30T16:00:00.000Z',
+                      },
                       value: { type: 'number' },
                     },
                   },

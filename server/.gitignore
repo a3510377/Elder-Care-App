@@ -4,3 +4,5 @@ yarn.lock
 swagger-output.json
 
 /data
+
+*.env

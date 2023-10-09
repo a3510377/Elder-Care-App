@@ -16,5 +16,4 @@
 - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 - [Adafruit-BMP085-Library](https://github.com/adafruit/Adafruit-BMP085-Library)
 - [Adafruit_ADXL345](https://github.com/adafruit/Adafruit_ADXL345)
-- [WebSockets](https://github.com/Links2004/arduinoWebSockets)
 - [TFT_eSPI](https://github.com/bodmer/TFT_eSPI)

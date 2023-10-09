@@ -1,5 +1,7 @@
 #pragma once
 
+#define SERVER_ADDRESS "http://192.168.20.38"
+
 #define PULSE_SENSOR_PIN A0
 #define DNS_PORT 53
 

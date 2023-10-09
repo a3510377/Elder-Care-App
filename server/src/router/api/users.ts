@@ -64,7 +64,7 @@ router.get('/:id', (req, res) => {
 
   if (!user) {
     /* #swagger.responses[404] = {
-      description: 'Success get user',
+      description: 'User not found',
       schema: { code: 2 }
     } */
     return sendResponse(
