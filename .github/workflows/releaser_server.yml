@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [server, .github/workflows]
+    paths: [server/**, .github/workflows/**]
   release:
     types: [created]
 
@@ -63,13 +63,13 @@ jobs:
 
       - uses: docker/build-push-action@v4
         with:
-          context: ./server
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-          file: ./Dockerfile
+          file: ./server/Dockerfile
           # linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8
           platforms: linux/amd64
 
