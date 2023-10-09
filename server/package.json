@@ -1,0 +1,52 @@
+{
+  "name": "elder-care-app",
+  "description": "Elder Care App",
+  "repository": "https://github.com/a3510377/elder-care-app",
+  "author": "a3510377",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "nodemon",
+    "lint": "eslint src/**/*.ts --fix",
+    "start": "ts-node -r dotenv/config .",
+    "swagger": "ts-node scripts/swagger.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.3",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.18",
+    "@types/morgan": "^1.9.6",
+    "@types/node": "^20.8.3",
+    "@types/swagger-ui-express": "^4.1.4",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "app-root-path": "^3.1.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3",
+    "swagger-autogen": "^2.23.6",
+    "swagger-ui-express": "^5.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "nodemonConfig": {
+    "exec": "yarn swagger && ts-node .",
+    "ext": "ts",
+    "watch": [
+      "src",
+      "scripts"
+    ],
+    "delay": "2"
+  }
+}

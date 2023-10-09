@@ -1,0 +1,6 @@
+node_modules
+dist
+yarn.lock
+swagger-output.json
+
+/data
