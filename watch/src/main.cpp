@@ -2,12 +2,15 @@
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
 #include <FallDetection.h>
+#include <HTTPClient.h>
 #include <PulseSensor.h>
 #include <SPIFFS.h>
 #include <Wire.h>
+#include <esp_adc_cal.h>
 
 #include "app/display.h"
 #include "network.h"
+#include "utils/info.h"
 #include "variable.h"
 
 PulseSensor pulse(33, 27);
@@ -16,6 +19,7 @@ Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
 FallDetection fallDetection;
 Display screen;
 Network network;
+HTTPClient http;
 
 SemaphoreHandle_t lvgl_mutex = xSemaphoreCreateMutex();
 
@@ -26,6 +30,27 @@ void TaskTFT(void *) {
     xSemaphoreGive(lvgl_mutex);
     vTaskDelay(1);
   }
+}
+
+void postJsonData(String data) {
+  WiFiClient client;
+
+  http.begin(client, String(SERVER_ADDRESS) + "/api/devices/");
+  http.addHeader("Content-Type", "application/json");
+  http.POST(data);
+}
+
+void postInfo(StateInfo *info) {
+  static ulong last_time = 0;
+  if (!info->pulse.state()) return;
+
+  ulong now = millis();
+  if (now - last_time > 3e4) last_time = now;
+
+  String data = "{";
+  data += "\"";
+  data += "}";
+  postJsonData(data);
 }
 
 void setup() {

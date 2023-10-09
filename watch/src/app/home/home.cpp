@@ -3,11 +3,9 @@
 #include <Adafruit_BMP085.h>
 #include <Arduino.h>
 #include <WiFi.h>
-#include <esp_adc_cal.h>
 
+#include "utils/info.h"
 #include "variable.h"
-
-#define range(low, item, hi) max(low, min(item, hi))
 
 Home::Home() {
   ui_batteryGroup = lv_obj_create(scr);
@@ -298,15 +296,6 @@ static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
   lv_anim_start(&animation);
 }
 
-uint32_t readADC(int ADC_Raw) {
-  esp_adc_cal_characteristics_t adc_chars;
-
-  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100,
-                           &adc_chars);
-
-  return esp_adc_cal_raw_to_voltage(ADC_Raw, &adc_chars);
-}
-
 void Home::main_process(StateInfo *info) {
   struct tm now;
   char buf[4];
@@ -335,13 +324,12 @@ void Home::main_process(StateInfo *info) {
   //   sprintf(buf, "%02.1f", info->bpm085.readTemperature());
   //   lv_label_set_text(ui_temperatureValue, buf);
   // }
-  float temperature = readADC(analogRead(LM35_PIN)) / 91;
-  sprintf(buf, "%02.1f", temperature);
+  sprintf(buf, "%02.1f", parseTemperature(info));
   lv_label_set_text(ui_temperatureValue, info->pulse.state() ? buf : "-");
 
-  float heart = range(60, int(info->pulse.getBeatsPerMinute()), 110);
-  lv_label_set_text(ui_heartValue,
-                    info->pulse.state() ? String(heart).c_str() : "-");
+  lv_label_set_text(ui_heartValue, info->pulse.state()
+                                       ? String(parseHeart(info)).c_str()
+                                       : "-");
 
   lv_label_set_text(ui_WiFiStatusIcon,
                     WiFi.isConnected() ? ICON_WIFI : ICON_WIFI_FIND);

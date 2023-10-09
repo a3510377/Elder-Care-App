@@ -15,7 +15,7 @@ static void taskStartConfigPortal(void *arg) {
 
 void Network::init() {
   WifiConfig config = getWifiConfig();
-  if (config.SSID == "") {
+  if (config.SSID == "" || config.ID == "") {
     xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 4096, this, 2, NULL);
   } else WiFi.begin(config.SSID, config.Password);
 }
@@ -166,9 +166,11 @@ void Network::handlerPostRoot(AsyncWebServerRequest *request) {
   if (request->hasParam("ssid", true)) {
     _ssid = request->getParam("ssid", true)->value();
   }
-  if (_ssid == "") {
-    request->send(400, F("text/plain;charset=utf-8"),
-                  F("錯誤，ssid 是必要參數"));
+  if (request->hasParam("id", true)) {
+    _id = request->getParam("id", true)->value();
+  }
+  if (_ssid == "" || _id == "") {
+    request->send(400, F("text/plain;charset=utf-8"), F("錯誤，缺少必要參數"));
     return;
   }
   if (request->hasParam("password", true)) {
@@ -249,6 +251,7 @@ WifiConfig Network::getWifiConfig() {
 
         if (key == "SSID") config.SSID = value;
         else if (key == "Password") config.Password = value;
+        else if (key == "ID") config.ID = value;
       }
     }
   }
@@ -267,5 +270,7 @@ void Network::saveWifiConfig(WifiConfig config) {
   configFile.println(config.SSID);
   configFile.print(F("Password:"));
   configFile.println(config.Password);
+  configFile.print(F("ID:"));
+  configFile.println(config.ID);
   configFile.close();
 }

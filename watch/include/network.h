@@ -12,6 +12,7 @@
 struct WifiConfig {
   String SSID;
   String Password;
+  String ID;
 };
 
 static bool hasIP(String str);
@@ -34,6 +35,10 @@ class Network {
   WifiConfig getWifiConfig(void);
   void saveWifiConfig(WifiConfig config);
 
+  inline String getID() {
+    return _id;
+  }
+
  protected:
   ulong _last_update_time;
   ulong _last_send_scan_time;
@@ -42,5 +47,5 @@ class Network {
 
   ulong _last_update_NTP_time;
 
-  String _ssid, _password, _old_ssid, _old_password;
+  String _ssid, _password, _id, _old_ssid, _old_password;
 };
