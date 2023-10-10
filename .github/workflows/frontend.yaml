@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths: [frontend/**, .github/workflows/**]
 
+env:
+  NUXT_APP_BASE_URL: '/Elder-Care-App'
+
 permissions:
   contents: read
   pages: write
