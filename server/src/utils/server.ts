@@ -8,8 +8,6 @@ export const createServer = () => {
   const app = express();
   const allowOrigins = process.env.ALLOWED_ORIGINS?.split(',');
 
-  console.log(process.env.ALLOWED_ORIGINS);
-
   app.use(
     morgan('dev', { skip: (req) => req.originalUrl.startsWith('/docs') }),
   );

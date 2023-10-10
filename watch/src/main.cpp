@@ -21,6 +21,7 @@ Display screen;
 Network network;
 HTTPClient http;
 
+ulong last_time = 0;
 SemaphoreHandle_t lvgl_mutex = xSemaphoreCreateMutex();
 
 void TaskTFT(void *) {
@@ -32,25 +33,32 @@ void TaskTFT(void *) {
   }
 }
 
-void postJsonData(String data) {
-  WiFiClient client;
-
-  http.begin(client, String(SERVER_ADDRESS) + "/api/devices/");
-  http.addHeader("Content-Type", "application/json");
-  http.POST(data);
-}
-
 void postInfo(StateInfo *info) {
-  static ulong last_time = 0;
   if (!info->pulse.state()) return;
 
   ulong now = millis();
-  if (now - last_time > 3e4) last_time = now;
+  if (last_time + 6e4 < now || !last_time) {
+    last_time = now;
 
-  String data = "{";
-  data += "\"";
-  data += "}";
-  postJsonData(data);
+    String id = network.getWifiConfig().ID;
+    String data = "{";
+    data += "\"temp\":";
+    data += String(parseTemperature(info));
+    data += ",\"heartbeat\":";
+    data += String(parseHeart(info));
+    data += "}";
+
+    Serial.println(data);
+    WiFiClient client;
+    http.begin(client, String(SERVER_ADDRESS) + "/api/devices/" + id);
+    http.addHeader("Content-Type", "application/json");
+
+    int status = http.POST(data);
+    if (status != 200) {
+      Serial.print(F("post info error: "));
+      Serial.println(status);
+    }
+  }
 }
 
 void setup() {
@@ -106,6 +114,7 @@ void loop() {
 
   screen.run_app(&info);
   network.autoUpdateNTP();
+  postInfo(&info);
 
   vTaskDelay(10);
 }

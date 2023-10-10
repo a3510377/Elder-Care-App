@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
     }
   } */
   const { type, user_id }: RegisterDeviceData = req.body;
-  if (!type || !user_id) {
+  if (type === undefined || user_id === undefined) {
     /* #swagger.responses[400] = {
       description: "Missing required parameter 'type' or 'user_id'",
       schema: { code: 1 }
@@ -116,6 +116,8 @@ router.post('/:id', (req, res) => {
       if (value !== undefined) {
         // @ts-ignore
         device[key] ||= {};
+        // @ts-ignore
+        device[key][getDate()] ||= [];
         // @ts-ignore
         device[key][getDate()][getHour()] = value;
       }

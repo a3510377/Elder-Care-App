@@ -11,12 +11,17 @@ static void taskStartConfigPortal(void *arg) {
   Network *network = (Network *)arg;
 
   network->startConfigPortal();
+  Serial.println("C");
+  Serial.println("[APP] Free memory: " + String(esp_get_free_heap_size()) +
+                 " bytes");
+  Serial.println("This task watermark: " +
+                 String(uxTaskGetStackHighWaterMark(NULL)) + " bytes");
 }
 
 void Network::init() {
   WifiConfig config = getWifiConfig();
   if (config.SSID == "" || config.ID == "") {
-    xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 4096, this, 2, NULL);
+    xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 4096, this, 1, NULL);
   } else WiFi.begin(config.SSID, config.Password);
 }
 
@@ -135,11 +140,11 @@ void Network::startConfigPortal() {
           WiFi.mode(WIFI_STA);
 
           if (status == WL_CONNECTED) {
+            sse->close();
             server.reset();
             dnsServer.reset();
-            sse->close();
 
-            saveWifiConfig(WifiConfig {_old_ssid, _password});
+            saveWifiConfig(WifiConfig {_old_ssid, _password, _id});
 
             // stop root while loop
             break;

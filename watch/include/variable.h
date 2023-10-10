@@ -1,6 +1,6 @@
 #pragma once
 
-#define SERVER_ADDRESS "http://192.168.20.38"
+#define SERVER_ADDRESS "http://192.168.20.38:8000"
 
 #define PULSE_SENSOR_PIN A0
 #define DNS_PORT 53
@@ -46,7 +46,7 @@ const char HOME_PAGE[] PROGMEM =
     "class='card'><form action='/' method='POST'><label "
     "for='ssid'>SSID</label><br/><input type='text' list='sl' id='ssid' "
     "name='ssid'/><br/><label for='password'>Password</label><br/><input "
-    "type='text' id='password' name='password'/><label "
+    "type='text' id='password' name='password'/><br/><label "
     "for='id'>ID</label><br/><input type='text' id='id' name='id'/><input "
     "type='submit' value='Submit'/></form><datalist "
     "id='sl'></datalist></div></div></div><script>const "
