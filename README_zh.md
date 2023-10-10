@@ -52,7 +52,7 @@
 | 線材             |    -    |   1   | ![wire](assets/wire.png)                       | 連接模塊與模塊        |    2 |
 | 外殼             |    -    |   1   | ![shell model](assets/shell_model.png)         | 外殼                  |   20 |
 | 2inch LCD        | 240×320 |   1   | ![2inch LCD](assets/2inch_LCD.png)             | 螢幕                  |  693 |
-| 三軸重力傾斜模塊 | ADXL345 |   1   | ![ADXL345](assets/ADXL345.png)                 | 三軸重力傾斜模塊      |   40 |
+| 三軸重力傾斜模塊 | ADXL345 |   1   | <img src="assets/ADXL345.png" alt="ADXL345" /> | 三軸重力傾斜模塊      |   40 |
 
 > 設備中的 2inch LCD 240×320 可置換成 240x240, 價格僅需要 138 元
 > 其中 240x320 中有找到更便宜的版本: 334元
