@@ -5,12 +5,16 @@
       "path": "."
     },
     {
+      "name": "watch",
+      "path": "watch"
+    },
+    {
       "name": "server",
       "path": "server"
     },
     {
-      "name": "watch",
-      "path": "watch"
+      "name": "frontend",
+      "path": "frontend"
     }
   ]
 }

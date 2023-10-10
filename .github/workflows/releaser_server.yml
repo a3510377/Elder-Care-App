@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
     paths: [server/**, .github/workflows/**]
-  release:
-    types: [created]
 
 env:
   # Use docker.io for Docker Hub if empty
