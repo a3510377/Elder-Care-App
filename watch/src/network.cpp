@@ -8,14 +8,7 @@
 #include "variable.h"
 
 static void taskStartConfigPortal(void *arg) {
-  Network *network = (Network *)arg;
-
-  network->startConfigPortal();
-  Serial.println("C");
-  Serial.println("[APP] Free memory: " + String(esp_get_free_heap_size()) +
-                 " bytes");
-  Serial.println("This task watermark: " +
-                 String(uxTaskGetStackHighWaterMark(NULL)) + " bytes");
+  ((Network *)arg)->startConfigPortal();
 }
 
 void Network::init() {

@@ -6,7 +6,7 @@ import {
   getDeviceFromID,
   writeDeviceFromID,
 } from '@/data/device';
-import { getDate, getHour } from '@/utils/utils';
+import { getDate, getHour, getMinute } from '@/utils/utils';
 
 export const router = Router();
 
@@ -114,12 +114,18 @@ router.post('/:id', (req, res) => {
 
     for (const [key, value] of Object.entries({ stepCount, heartbeat, temp })) {
       if (value !== undefined) {
+        const date = getDate();
+        const hour = getHour();
+        const minute = getMinute();
+
         // @ts-ignore
         device[key] ||= {};
         // @ts-ignore
-        device[key][getDate()] ||= [];
+        device[key][date] ||= [];
         // @ts-ignore
-        device[key][getDate()][getHour()] = value;
+        device[key][date][hour] ||= [];
+        // @ts-ignore
+        device[key][date][hour][minute] = value;
       }
     }
 
@@ -154,9 +160,9 @@ router.post('/:id', (req, res) => {
     // export interface IFileDeviceEnv {
     //   type: 1;
     //   user_id: string;
-    //   airQuality?: { [date: DateType]: IAirQualityData[] }; // every minute
-    //   humidity?: { [date: DateType]: number[] }; // every minute
-    //   temp?: { [date: DateType]: number[] }; // every minute
+    //   airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
+    //   humidity?: { [date: DateType]: number[][] }; // every minute
+    //   temp?: { [date: DateType]: number[][] }; // every minute
     //   warn: {
     //     airQuality?: ({ date: Date } & IAirQualityData)[];
     //     harmfulGas?: { date: Date; value: number }[];

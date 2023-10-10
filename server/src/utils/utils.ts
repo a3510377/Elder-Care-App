@@ -5,3 +5,5 @@ export const getDate = (): `${string}/${string}/${string}` => {
 };
 
 export const getHour = () => new Date().getHours();
+
+export const getMinute = () => new Date().getMinutes();

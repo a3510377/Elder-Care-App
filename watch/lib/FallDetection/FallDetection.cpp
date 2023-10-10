@@ -30,8 +30,8 @@ void FallDetection::loop(sensors_event_t event) {
       }
     } break;
     // step2: Check whether the difference between the old and new data is
-    // greater than the threshold. If it has not exceeded the threshold after
-    // more than 1 second, trigger next
+    //        greater than the threshold. If it has not exceeded the threshold
+    //        after more than 1 second, trigger next
     case 2: {
       if (abs(_old_totalAcceleration - totalAcceleration) > 20) {
         _step = 0;
@@ -41,9 +41,17 @@ void FallDetection::loop(sensors_event_t event) {
       if (millis() - _step_start_time > 1e3) _next_step();
     } break;
     case 3: {
-      _fall = true;
-      _emit();
-      return;
+      _falling = true;
+
+      if (millis() - _step_start_time > 5e3) {
+        if (_handler != NULL) _handler();
+
+        close_warning();
+      }
+
+    } break;
+    default: {
+      _step = 0;
     }
   }
 }
@@ -51,10 +59,4 @@ void FallDetection::loop(sensors_event_t event) {
 void FallDetection::_next_step() {
   _step++;
   _step_start_time = millis();
-}
-
-void FallDetection::_emit() {
-  for (const auto &callback : _callbacks) {
-    (*callback)(_fall);
-  }
 }

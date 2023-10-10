@@ -22,6 +22,9 @@ Network network;
 HTTPClient http;
 
 ulong last_time = 0;
+bool warning, old_fall_status;
+int vibration_warn_delay;
+uint base_vibration_warn_delay;
 SemaphoreHandle_t lvgl_mutex = xSemaphoreCreateMutex();
 
 void TaskTFT(void *) {
@@ -33,6 +36,22 @@ void TaskTFT(void *) {
   }
 }
 
+void postJson(String data) {
+  WiFiClient client;
+
+  String id = network.getWifiConfig().ID;
+  http.begin(client, String(SERVER_ADDRESS) + "/api/devices/" + id);
+  http.addHeader("Content-Type", "application/json");
+
+  Serial.print("post data: ");
+  Serial.println(data);
+  int status = http.POST(data);
+  if (status != 200) {
+    Serial.print(F("post info error: "));
+    Serial.println(status);
+  }
+}
+
 void postInfo(StateInfo *info) {
   if (!info->pulse.state()) return;
 
@@ -40,7 +59,6 @@ void postInfo(StateInfo *info) {
   if (last_time + 6e4 < now || !last_time) {
     last_time = now;
 
-    String id = network.getWifiConfig().ID;
     String data = "{";
     data += "\"temp\":";
     data += String(parseTemperature(info));
@@ -48,22 +66,14 @@ void postInfo(StateInfo *info) {
     data += String(parseHeart(info));
     data += "}";
 
-    Serial.println(data);
-    WiFiClient client;
-    http.begin(client, String(SERVER_ADDRESS) + "/api/devices/" + id);
-    http.addHeader("Content-Type", "application/json");
-
-    int status = http.POST(data);
-    if (status != 200) {
-      Serial.print(F("post info error: "));
-      Serial.println(status);
-    }
+    postJson(data);
   }
 }
 
 void setup() {
   Serial.begin(9600);
 
+  pinMode(BTN_PIN, INPUT_PULLUP);
   pinMode(NOTIFY_PIN, OUTPUT);
   digitalWrite(NOTIFY_PIN, LOW);
   delay(500);
@@ -97,6 +107,9 @@ void setup() {
   screen.init();
   screen.setup_app();
 
+  fallDetection.set_handler(
+      []() { postJson(F("{\"warn\":{\"fall\":true}}")); });
+
   xTaskCreatePinnedToCore(TaskTFT, "TaskTFT", 4096, NULL, 0, NULL, 1);
 }
 
@@ -115,6 +128,29 @@ void loop() {
   screen.run_app(&info);
   network.autoUpdateNTP();
   postInfo(&info);
+
+  if (fallDetection.has_falling()) {
+    if (!warning) {
+      warning = true;
+      vibration_warn_delay = 0;
+      base_vibration_warn_delay = 20;
+    }
+    if (!digitalRead(BTN_PIN)) {
+      fallDetection.close_warning();
+    }
+    old_fall_status = true;
+  } else if (old_fall_status) old_fall_status = warning = false;
+
+  if (warning) {
+    digitalWrite(NOTIFY_PIN, vibration_warn_delay > 0);
+
+    if (vibration_warn_delay < 0 &&
+        base_vibration_warn_delay < -vibration_warn_delay) {
+      vibration_warn_delay = base_vibration_warn_delay;
+    }
+
+    vibration_warn_delay--;
+  } else digitalWrite(NOTIFY_PIN, HIGH);
 
   vTaskDelay(10);
 }
