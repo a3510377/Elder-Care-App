@@ -40,19 +40,19 @@
 
 ### 實作設備及器材
 
-| 名稱             |  型號   | 數量  | 示意圖                                         | 說明                  | 價格 |
-| ---------------- | :-----: | :---: | ---------------------------------------------- | --------------------- | ---: |
-| esp32            |  REV1   |   1   | ![esp32_REV1](assets/esp32_REV1.png)           | 主開發版              |  115 |
-| 端子線           |  PH2.0  |   1   | ![PH2.0](assets/PH2_0.png)                     | ESP32 電池端子        |    3 |
-| pulse sensor     |    -    |   1   | ![pulse sensor](assets/pulse_sensor.png)       | 生物模擬感測器感應器  |   60 |
-| 手機震動電機     |  1027   |   1   | ![vibration motor](assets/vibration_motor.png) | 手機震動電機          |   13 |
-| 按鈕             |    -    |   1   | ![button](assets/button.png)                   | 與設備交互            |    3 |
-| lm35             |    -    |   1   | ![lm35](assets/lm35.png)                       | 溫度感測測器          |   12 |
-| BMP180           |    -    |   1   | ![bmp180](assets/bmp180.png)                   | 溫度/大氣壓立感測測器 |   15 |
-| 線材             |    -    |   1   | ![wire](assets/wire.png)                       | 連接模塊與模塊        |    2 |
-| 外殼             |    -    |   1   | ![shell model](assets/shell_model.png)         | 外殼                  |   20 |
-| 2inch LCD        | 240×320 |   1   | ![2inch LCD](assets/2inch_LCD.png)             | 螢幕                  |  693 |
-| 三軸重力傾斜模塊 | ADXL345 |   1   | <img src="assets/ADXL345.png" alt="ADXL345" /> | 三軸重力傾斜模塊      |   40 |
+| 名稱             |  型號   | 數量  | 示意圖                                                       | 說明                  | 價格 |
+| ---------------- | :-----: | :---: | ------------------------------------------------------------ | --------------------- | ---: |
+| esp32            |  REV1   |   1   | ![esp32_REV1](assets/esp32_REV1.png)                         | 主開發版              |  115 |
+| 端子線           |  PH2.0  |   1   | ![PH2.0](assets/PH2_0.png)                                   | ESP32 電池端子        |    3 |
+| pulse sensor     |    -    |   1   | ![pulse sensor](assets/pulse_sensor.png)                     | 生物模擬感測器感應器  |   60 |
+| 手機震動電機     |  1027   |   1   | ![vibration motor](assets/vibration_motor.png)               | 手機震動電機          |   13 |
+| 按鈕             |    -    |   1   | ![button](assets/button.png)                                 | 與設備交互            |    3 |
+| lm35             |    -    |   1   | ![lm35](assets/lm35.png)                                     | 溫度感測測器          |   12 |
+| BMP180           |    -    |   1   | ![bmp180](assets/bmp180.png)                                 | 溫度/大氣壓立感測測器 |   15 |
+| 線材             |    -    |   1   | ![wire](assets/wire.png)                                     | 連接模塊與模塊        |    2 |
+| 外殼             |    -    |   1   | ![shell model](assets/shell_model.png)                       | 外殼                  |   20 |
+| 2inch LCD        | 240×320 |   1   | ![2inch LCD](assets/2inch_LCD.png)                           | 螢幕                  |  693 |
+| 三軸重力傾斜模塊 | ADXL345 |   1   | <img src="assets/ADXL345.png" alt="ADXL345" width="100px" /> | 三軸重力傾斜模塊      |   40 |
 
 > 設備中的 2inch LCD 240×320 可置換成 240x240, 價格僅需要 138 元
 > 其中 240x320 中有找到更便宜的版本: 334元
