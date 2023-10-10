@@ -57,4 +57,22 @@
 > 設備中的 2inch LCD 240×320 可置換成 240x240, 價格僅需要 138 元
 > 其中 240x320 中有找到更便宜的版本: 334元
 
+## 部分程式碼/演算法/想法參考
+
+### Watch Reference
+
+- [WiFiManager](https://github.com/tzapu/WiFiManager)
+- [Heartbeat Detection](https://github.com/WorldFamousElectronics/PulseSensorPlayground)
+- [Fall Detection Algorithm](https://maker.pro/arduino/tutorial/how-to-build-a-fall-detector-with-arduino)
+
+## libraries
+
+### Watch Libraries
+
+- [lvgl](https://github.com/lvgl/lvgl)
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [Adafruit-BMP085-Library](https://github.com/adafruit/Adafruit-BMP085-Library)
+- [Adafruit_ADXL345](https://github.com/adafruit/Adafruit_ADXL345)
+- [TFT_eSPI](https://github.com/bodmer/TFT_eSPI)
+
 <!-- https://www.apple.com/tw/shop/buy-watch/apple-watch -->
