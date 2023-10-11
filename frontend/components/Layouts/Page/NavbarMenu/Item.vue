@@ -2,9 +2,11 @@
   <template v-if="menu.type === 'link'">
     <NuxtLink :to="menu.to" #="{ isActive }">
       <span
+        class="transition-colors ease-linear"
         :class="{
-          'text-gray-700 dark:text-gray-300': !isActive,
-          'text-gray-900 dark:text-gray-100 font-bold': isActive,
+          'text-gray-700 dark:text-gray-400 hover:text-gray-300': !isActive,
+          'text-gray-900 dark:text-gray-200 hover:text-gray-100 font-bold':
+            isActive,
         }"
       >
         {{ menu.title }}
@@ -19,8 +21,6 @@
 import { MenuItem } from '~/type';
 
 const { menu } = defineProps<{ menu: MenuItem }>();
-const route = useRoute();
-console.log(route.path);
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,0 +1,26 @@
+<template>
+  <div class="flex items-start justify-center w-full py-5">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-4 text-gray-50"
+    >
+      <PageUser v-for="(user, i) in data?.body" :key="i" :user="user" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { APIRequestBody, User } from '~/type';
+
+const {
+  public: { apiUrl },
+} = useRuntimeConfig();
+
+const { data: data } = await useFetch<APIRequestBody<User[]>>(
+  `${apiUrl}/api/users`,
+  { server: false }
+);
+
+// onMounted(() => {
+//   const ws = new WebSocket(`${config.apiUrl}/api/gateway`);
+// });
+</script>

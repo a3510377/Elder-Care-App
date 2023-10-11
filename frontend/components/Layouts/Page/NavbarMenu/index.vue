@@ -11,4 +11,3 @@ const { menu } = defineProps<{ menu: MenuItem[] }>();
 </script>
 
 <style lang="scss" scoped></style>
-<!-- router-link-active router-link-exact-active -->

@@ -56,18 +56,17 @@ export const readDeviceFile = () => {
 
 export const createDevice = (type: DeviceTypes, user_id: string) => {
   const users = readUserFile();
-  const data = readDeviceFile();
-  const id = nextLastDeviceID();
   const user = users[user_id];
-
   if (!user) {
     throw new Error(`User ${user_id} does not exist`);
   }
+  const data = readDeviceFile();
+  const id = nextLastDeviceID();
 
   data[id] = { type, user_id, warn: {} };
   user.devices.push(id);
 
-  writeJsonFile(USERS_DATA_PATH, user);
+  writeJsonFile(USERS_DATA_PATH, users);
   writeJsonFile(DEVICES_DATA_PATH, data);
 
   return { ...data[id], id };

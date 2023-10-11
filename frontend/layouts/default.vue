@@ -1,7 +1,6 @@
 <template>
-  <slot />
+  <LayoutPageNavbar />
+  <div class="flex min-h-screen pt-[64px]">
+    <slot />
+  </div>
 </template>
-
-<script lang="ts" setup></script>
-
-<style lang="scss" scoped></style>

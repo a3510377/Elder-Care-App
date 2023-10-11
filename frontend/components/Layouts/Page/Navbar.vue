@@ -4,7 +4,7 @@
       <div>
         <NuxtLink
           to="/"
-          class="font-bold text-lg text-lime-500 hover:text-lime-600 transition-colors ease-linear"
+          class="font-bold text-lg text-green-500 hover:text-green-600 transition-colors ease-linear"
         >
           Elder-Care-App
         </NuxtLink>
@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { MenuItem } from '~/type';
 
-const menu: MenuItem[] = [{ type: 'link', title: 'awa', to: '/' }];
+const menu: MenuItem[] = [{ type: 'link', title: '用戶', to: '/users' }];
 </script>
 
 <style lang="scss" scoped>
