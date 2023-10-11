@@ -78,3 +78,39 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  swagger:
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js v18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install
+        run: yarn install
+
+      - name: Summon swagger data
+        run: yarn swagger
+
+      - name: deploy
+        run: |
+          mkdir swagger && cd swagger
+          cp ../swagger-output.json swagger.json
+          if [ "none" !=  "$cname" ]; then echo "$cname" > CNAME; fi
+          git config --global user.name "$user_name"
+          git config --global user.email "$user_email"
+          git init
+          git add -A
+          git commit -m "${{ github.event.head_commit.message }}"
+          git push -f https://_:"$token"@github.com/a3510377/Elder-Care-App master:assets
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: GitHub Action
+          user_email: action@github.com
+          cname: none
