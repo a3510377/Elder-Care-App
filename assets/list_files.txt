@@ -1,0 +1,190 @@
+|   Elder-Care-App-Competition.code-workspace
+|   LICENSE
+|   output.txt
+|   README.md
+|   README_zh.md
+|   
++---.github
+|   \---workflows
+|           frontend.yaml
+|           releaser_server.yml
+|           
++---3D Model
+|   \---watch
+|           ElderCareClock_All.stl
+|           ElderCareClock_¤W»\.stl
+|           ElderCareClock_©³»\.stl
+|           
++---assets
+|       2inch_LCD.png
+|       ADXL345.png
+|       bmp180.png
+|       button.png
+|       esp32_REV1.png
+|       lm35.png
+|       PH2_0.png
+|       pulse_sensor.png
+|       shell_model.png
+|       vibration_motor.png
+|       wire.png
+|       
++---frontend
+|   |   .gitignore
+|   |   .npmrc
+|   |   app.vue
+|   |   nuxt.config.ts
+|   |   package.json
+|   |   README.md
+|   |   tailwind.config.ts
+|   |   tsconfig.json
+|   |   type.ts
+|   |   yarn.lock
+|   |   
+|   +---components
+|   |   +---Layouts
+|   |   |   \---Page
+|   |   |       |   Navbar.vue
+|   |   |       |   
+|   |   |       \---NavbarMenu
+|   |   |               index.vue
+|   |   |               Item.vue
+|   |   |               
+|   |   +---Pages
+|   |   |   |   User.vue
+|   |   |   |   
+|   |   |   \---Device
+|   |   |           index.vue
+|   |   |           
+|   |   \---utils
+|   |           GeneralHead.vue
+|   |           
+|   +---layouts
+|   |       default.vue
+|   |       
+|   +---pages
+|   |   |   index.vue
+|   |   |   
+|   |   \---users
+|   |           index.vue
+|   |           [id].vue
+|   |           
+|   \---public
+|       |   favicon.ico
+|       |   
+|       \---docs
+|               favicon-16x16.png
+|               favicon-32x32.png
+|               index.css
+|               index.html
+|               oauth2-redirect.html
+|               swagger-initializer.js
+|               swagger-ui-bundle.js
+|               swagger-ui-es-bundle-core.js
+|               swagger-ui-es-bundle.js
+|               swagger-ui-standalone-preset.js
+|               swagger-ui.css
+|               swagger-ui.js
+|               
++---server
+|   |   .dockerignore
+|   |   .env.example
+|   |   .eslintignore
+|   |   .eslintrc.js
+|   |   .gitattributes
+|   |   .gitignore
+|   |   .prettierignore
+|   |   .prettierrc.yaml
+|   |   Dockerfile
+|   |   LICENSE
+|   |   package.json
+|   |   README.md
+|   |   tsconfig.json
+|   |   
+|   +---scripts
+|   |       swagger.ts
+|   |       
+|   \---src
+|       |   index.ts
+|       |   
+|       +---data
+|       |       device.ts
+|       |       index.ts
+|       |       user.ts
+|       |       
+|       +---router
+|       |   |   index.ts
+|       |   |   
+|       |   +---api
+|       |   |       devices.ts
+|       |   |       index.ts
+|       |   |       users.ts
+|       |   |       
+|       |   \---utils
+|       |           code.ts
+|       |           index.ts
+|       |           
+|       \---utils
+|               file.ts
+|               gateway.ts
+|               server.ts
+|               utils.ts
+|               
+\---watch
+    |   .gitignore
+    |   platformio.ini
+    |   
+    +---.vscode
+    |       extensions.json
+    |       settings.json
+    |       
+    +---extra
+    |       index.html
+    |       min.html
+    |       
+    +---include
+    |   |   network.h
+    |   |   variable.h
+    |   |   
+    |   +---app
+    |   |   |   base.h
+    |   |   |   display.h
+    |   |   |   ui.h
+    |   |   |   
+    |   |   \---home
+    |   |           home.h
+    |   |           
+    |   \---utils
+    |           info.h
+    |           
+    +---lib
+    |   +---FallDetection
+    |   |       FallDetection.cpp
+    |   |       FallDetection.h
+    |   |       
+    |   \---PulseSensor
+    |           PulseSensor.cpp
+    |           PulseSensor.h
+    |           
+    +---src
+    |   |   main.cpp
+    |   |   network.cpp
+    |   |   
+    |   +---app
+    |   |   |   display.cpp
+    |   |   |   
+    |   |   +---fonts
+    |   |   |       Icon.c
+    |   |   |       NumberBig.c
+    |   |   |       NumberExtra.c
+    |   |   |       
+    |   |   +---home
+    |   |   |       home.cpp
+    |   |   |       
+    |   |   \---utils
+    |   |           animation.cpp
+    |   |           
+    |   \---utils
+    |           info.cpp
+    |           
+    \---test
+            README

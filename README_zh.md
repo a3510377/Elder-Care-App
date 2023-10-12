@@ -57,6 +57,37 @@
 > 設備中的 2inch LCD 240×320 可置換成 240x240, 價格僅需要 138 元
 > 其中 240x320 中有找到更便宜的版本: 334元
 
+## 程式碼架構
+
+由於程式碼檔案數量太多，將會取重點概述，如需查看完整的資料夾結構，請看 [list_files.txt](assets/list_files.txt)。
+![list files](assets/list_files.png)
+
+```yml
+/  # 根目錄
+├ 📂 .github/workflows      # Github actions 設定檔案
+│ ├ frontend.yaml            # 前端網站編譯/部屬
+│ └ releaser_server.yml      # 將伺服器程式碼編譯發布成 docker package
+│
+├ 📂 3D Model/watch         # 手錶的 3D 模型
+│ ├ ElderCareClock_上蓋.stl  # 上蓋
+│ ├ ElderCareClock_底蓋.stl  # 底蓋
+│ └ ElderCareClock_All.stl   # 上蓋 + 底蓋
+│
+├ 📂 assets                 # README 中使用的圖片等靜態圖片/文件
+│ └ [filename].*             # 圖片等靜態文件![Alt text](image.png)
+│
+├ 📂 frontend               # 網頁前端原始碼
+│
+├ 📂 server                 # 網頁後端原始碼
+│
+├ 📂 watch                  # 手錶原始碼
+│
+├ Elder-Care-App-Competition.code-workspace  # vscode 工作區設定檔
+├ LICENSE                                    # 授權條款
+└ README_zh.md                               # 本文件
+└ README.md                                  # 概述
+```
+
 ## 部分程式碼/演算法/想法參考
 
 ### Watch Reference
