@@ -1,4 +1,5 @@
 <template>
+  <GeneralHead page-title="用戶" />
   <div class="flex items-start justify-center w-full py-5">
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-4 text-gray-50"
@@ -19,8 +20,4 @@ const { data: data } = await useFetch<APIRequestBody<User[]>>(
   `${apiUrl}/api/users`,
   { server: false }
 );
-
-// onMounted(() => {
-//   const ws = new WebSocket(`${config.apiUrl}/api/gateway`);
-// });
 </script>

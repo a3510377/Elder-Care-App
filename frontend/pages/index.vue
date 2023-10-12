@@ -1,8 +1,9 @@
 <template>
+  <GeneralHead />
   <div class="w-full flex flex-col justify-center items-center text-white">
     <h1 class="text-2xl sm:text-4xl md:text-6xl uppercase text-center mb-5">
+      <span class="block">安全居家</span>
       <span class="block">Elder Care App</span>
-      <span class="block">還沒想好題目</span>
     </h1>
     <div class="flex gap-5">
       <NuxtLink
