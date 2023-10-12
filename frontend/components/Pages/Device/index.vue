@@ -31,25 +31,23 @@
         </div>
         <div>
           <p>皮膚溫度:</p>
-          <div class="text-sm">
-            <Line
-              :data="{
-                labels: Array.from({ length: 24 }).map((_, i) => i),
-                datasets: [
-                  {
-                    backgroundColor: '#f87979',
-                    data:
-                      temperature?.map((d) =>
-                        d?.filter(Boolean).reduce((a, b) => a + b)
-                      ) || [],
-                  },
-                ],
-              }"
-              :options="{
-                borderColor: '#f87979',
-              }"
-            />
-          </div>
+          <Line
+            :data="{
+              labels: Array.from({ length: 24 }).map((_, i) => i),
+              datasets: [
+                {
+                  backgroundColor: '#f87979',
+                  data:
+                    temperature?.map((d) =>
+                      d?.filter(Boolean).reduce((a, b) => a + b)
+                    ) || [],
+                },
+              ],
+            }"
+            :options="{
+              borderColor: '#f87979',
+            }"
+          />
         </div>
       </div>
     </div>
