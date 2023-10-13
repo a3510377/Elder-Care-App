@@ -8,7 +8,7 @@
         class="top-2 right-2 absolute rounded-full p-0.5 cursor-pointer hover:bg-slate-300"
         @click="() => console.log('awa')"
       >
-        <Icon name="mdi:close" class="block" width="18px" height="18px" />
+        <Icon name="mdi:close" class="!block" width="18px" height="18px" />
       </div>
     </div>
   </div>
