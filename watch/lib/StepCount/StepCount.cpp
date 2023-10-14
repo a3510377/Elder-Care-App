@@ -16,13 +16,13 @@ void StepCount::init() {
         char buf[10];  // 4+1+2+1+2 => 10
         if (getLocalTime(&now)) {
           strftime(buf, 10, "%Y/%m/%d", &now);
-        }
 
-        if (key == buf) {
-          String value = line.substring(separatorIndex + 1);
-          value.replace("\r", "");
-          _steps = value.toInt();
-          break;
+          if (key.equals(buf)) {
+            String value = line.substring(separatorIndex + 1);
+            _steps = value.toInt();
+            _start = true;
+            break;
+          }
         }
       }
     }
@@ -35,6 +35,8 @@ void StepCount::loop(sensors_event_t event) {
 }
 
 void StepCount::loop(float total_acceleration) {
+  if (!_start) init();
+
   float value = (total_acceleration + _old_total_acceleration) / 2;
   _old_total_acceleration = total_acceleration;
 

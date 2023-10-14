@@ -106,19 +106,19 @@ void setup() {
       ;
   }
 
-  network.init();
-  pulse.begin();
   screen.init();
   screen.setup_app();
-
   fallDetection.set_handler(
       []() { postJson(F("{\"warn\":{\"fall\":true}}")); });
 
   xTaskCreatePinnedToCore(TaskTFT, "TaskTFT", 4096, NULL, 0, NULL, 1);
+
+  network.init();
+  pulse.begin();
+  step.init();
 }
 
 void loop() {
-  network.autoUpdateNTP();
   sensors_event_t event;
   accel.getEvent(&event);
 
@@ -142,6 +142,7 @@ void loop() {
       event = event,
   };
   screen.run_app(&info);
+  network.autoUpdateNTP();
   postInfo(&info);
 
   if (fallDetection.has_falling()) {

@@ -20,5 +20,5 @@ class StepCount {
   uint _steps;
   float _old_total_acceleration;
   uint8_t _threshold = 6;
-  bool _flag;
+  bool _flag, _start;
 };
