@@ -20,17 +20,17 @@
 
 ### Frontend Libraries
 
-[@nuxt/devtools latest](https://www.npmjs.com/package/@nuxt/devtools)
-[@nuxtjs/tailwindcss ^6.8.0](https://www.npmjs.com/package/@nuxtjs/tailwindcss)
-[nuxt ^3.7.4](https://www.npmjs.com/package/nuxt)
-[nuxt-icon ^0.5.0](https://www.npmjs.com/package/nuxt-icon)
-[vue ^3.3.4](https://www.npmjs.com/package/vue)
-[vue-router ^4.2.5](https://www.npmjs.com/package/vue-router)
-[@vueuse/core ^10.5.0](https://www.npmjs.com/package/@vueuse/core)
-[@vueuse/nuxt ^10.5.0](https://www.npmjs.com/package/@vueuse/nuxt)
-[chart.js ^4.4.0](https://www.npmjs.com/package/chart.js)
-[sass ^1.69.1](https://www.npmjs.com/package/sass)
-[vue-chartjs ^5.2.0](https://www.npmjs.com/package/vue-chartjs)
+- [@nuxt/devtools latest](https://www.npmjs.com/package/@nuxt/devtools)
+- [@nuxtjs/tailwindcss ^6.8.0](https://www.npmjs.com/package/@nuxtjs/tailwindcss)
+- [nuxt ^3.7.4](https://www.npmjs.com/package/nuxt)
+- [nuxt-icon ^0.5.0](https://www.npmjs.com/package/nuxt-icon)
+- [vue ^3.3.4](https://www.npmjs.com/package/vue)
+- [vue-router ^4.2.5](https://www.npmjs.com/package/vue-router)
+- [@vueuse/core ^10.5.0](https://www.npmjs.com/package/@vueuse/core)
+- [@vueuse/nuxt ^10.5.0](https://www.npmjs.com/package/@vueuse/nuxt)
+- [chart.js ^4.4.0](https://www.npmjs.com/package/chart.js)
+- [sass ^1.69.1](https://www.npmjs.com/package/sass)
+- [vue-chartjs ^5.2.0](https://www.npmjs.com/package/vue-chartjs)
 
 ### Server Libraries
 
