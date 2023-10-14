@@ -14,19 +14,9 @@
           <Line
             :data="{
               labels: Array.from({ length: 24 }).map((_, i) => i),
-              datasets: [
-                {
-                  backgroundColor: '#f87979',
-                  data:
-                    heartbeat?.map((d) =>
-                      d?.filter(Boolean).reduce((a, b) => a + b)
-                    ) || [],
-                },
-              ],
+              datasets: [{ backgroundColor: '#f87979', data: heartbeat }],
             }"
-            :options="{
-              borderColor: '#f87979',
-            }"
+            :options="{ borderColor: '#f87979' }"
           />
         </div>
         <div>
@@ -34,19 +24,19 @@
           <Line
             :data="{
               labels: Array.from({ length: 24 }).map((_, i) => i),
-              datasets: [
-                {
-                  backgroundColor: '#f87979',
-                  data:
-                    temperature?.map((d) =>
-                      d?.filter(Boolean).reduce((a, b) => a + b)
-                    ) || [],
-                },
-              ],
+              datasets: [{ backgroundColor: '#f87979', data: temperature }],
             }"
-            :options="{
-              borderColor: '#f87979',
+            :options="{ borderColor: '#f87979' }"
+          />
+        </div>
+        <div>
+          <p>步數:</p>
+          <Line
+            :data="{
+              labels: Array.from({ length: 24 }).map((_, i) => i),
+              datasets: [{ backgroundColor: '#f87979', data: stepCount }],
             }"
+            :options="{ borderColor: '#f87979' }"
           />
         </div>
       </div>
@@ -94,8 +84,35 @@ const getDate = (): `${string}/${string}/${string}` => {
   return `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
 };
 
-const heartbeat = computed(() => deviceBody.value?.heartbeat?.[getDate()]);
-const temperature = computed(() => deviceBody.value?.temp?.[getDate()]);
+const heartbeat = computed(() => {
+  return (
+    deviceBody.value?.heartbeat?.[getDate()].map((d) =>
+      d?.filter(Boolean).reduce((a, b) => a + b)
+    ) || []
+  );
+});
+const temperature = computed(() => {
+  return (
+    deviceBody.value?.temp?.[getDate()].map((d) =>
+      d?.filter(Boolean).reduce((a, b) => a + b)
+    ) || []
+  );
+});
+const stepCount = computed(() => {
+  const data =
+    deviceBody.value?.stepCount?.[getDate()].map((d) =>
+      d?.filter(Boolean).reduce((a, b) => a + b)
+    ) || [];
+
+  let last = 0;
+  const newData: number[] = [];
+  for (const d of data) {
+    newData.push(d - last);
+    last += d || 0;
+  }
+
+  return newData;
+});
 </script>
 
 <style lang="scss" scoped></style>
