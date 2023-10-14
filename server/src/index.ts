@@ -1,5 +1,4 @@
 import { init } from './data';
-import { WebSocketServer } from './utils/gateway';
 import { createServer } from './utils/server';
 
 process
@@ -11,12 +10,9 @@ const main = () => {
   const app = createServer();
   const port = process.env.PORT ?? 8000;
 
-  const server = app.listen(port, () => {
+  app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port} `);
   });
-  const ws = new WebSocketServer({ server, path: '/api/gateway' });
-  ws.init();
-  app.set('ws', ws);
 };
 
 main();

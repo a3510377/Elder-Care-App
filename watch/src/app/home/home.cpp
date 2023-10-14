@@ -326,8 +326,7 @@ void Home::main_process(StateInfo *info) {
   // }
   sprintf(buf, "%02.1f", parseTemperature(info));
   lv_label_set_text(ui_temperatureValue, info->pulse.state() ? buf : "-");
-  lv_label_set_text(ui_temperatureValue,
-                    String(info->stepCount.get_step()).c_str());
+  lv_label_set_text(ui_stepsValue, String(info->stepCount.get_step()).c_str());
   lv_label_set_text(ui_heartValue, info->pulse.state()
                                        ? String(parseHeart(info)).c_str()
                                        : "-");

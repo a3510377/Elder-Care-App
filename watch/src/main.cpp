@@ -66,7 +66,7 @@ void postInfo(StateInfo *info) {
     data += String(parseTemperature(info));
     data += ",\"heartbeat\":";
     data += String(parseHeart(info));
-    data += "\"stepCount\":";
+    data += ",\"stepCount\":";
     data += String(info->stepCount.get_step());
     data += "}";
 
