@@ -5,6 +5,7 @@
 #include <HTTPClient.h>
 #include <PulseSensor.h>
 #include <SPIFFS.h>
+#include <StepCount.h>
 #include <Wire.h>
 #include <esp_adc_cal.h>
 
@@ -17,6 +18,7 @@ PulseSensor pulse(33, 27);
 Adafruit_BMP085 bmp;
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
 FallDetection fallDetection;
+StepCount step;
 Display screen;
 Network network;
 HTTPClient http;
@@ -64,6 +66,8 @@ void postInfo(StateInfo *info) {
     data += String(parseTemperature(info));
     data += ",\"heartbeat\":";
     data += String(parseHeart(info));
+    data += "\"stepCount\":";
+    data += String(info->stepCount.get_step());
     data += "}";
 
     postJson(data);
@@ -114,19 +118,30 @@ void setup() {
 }
 
 void loop() {
+  network.autoUpdateNTP();
+  sensors_event_t event;
+  accel.getEvent(&event);
+
   if (touchRead(4) <= 50) {
     if (!pulse.state()) pulse.start();
 
     pulse.read();
+
+    float total_acceleration =
+        sqrt(sq(event.acceleration.x) + sq(event.acceleration.y) +
+             sq(event.acceleration.z));
+    step.loop(total_acceleration);
+    fallDetection.loop(total_acceleration);
   } else if (pulse.state()) pulse.stop();
 
-  sensors_event_t event;
-  accel.getEvent(&event);
-  fallDetection.loop(event);
-  StateInfo info = StateInfo {pulse, bmp, fallDetection, event};
-
+  StateInfo info = StateInfo {
+      .pulse = pulse,
+      .bpm085 = bmp,
+      .fallDetection = fallDetection,
+      .stepCount = step,
+      event = event,
+  };
   screen.run_app(&info);
-  network.autoUpdateNTP();
   postInfo(&info);
 
   if (fallDetection.has_falling()) {

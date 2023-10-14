@@ -8,6 +8,7 @@ typedef std::function<void()> FallDetectionFunction;
 class FallDetection {
  public:
   void loop(sensors_event_t event);
+  void loop(float total_acceleration);
 
   inline ulong get_step_time() {
     return _step_start_time;

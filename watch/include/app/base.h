@@ -4,6 +4,7 @@
 #include <Adafruit_BMP085.h>
 #include <FallDetection.h>
 #include <PulseSensor.h>
+#include <StepCount.h>
 #include <TFT_eSPI.h>
 
 #include "ui.h"
@@ -14,6 +15,7 @@ struct StateInfo {
   PulseSensor pulse;
   Adafruit_BMP085 bpm085;
   FallDetection fallDetection;
+  StepCount stepCount;
   sensors_event_t accel;
 };
 
