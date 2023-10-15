@@ -7,7 +7,7 @@ import {
   writeDeviceFromID,
 } from '@/data/device';
 import { getDate, getHour, getMinute } from '@/utils/utils';
-import { Context } from '../utils/Context';
+import { Context } from '../utils/context';
 import { getUserFromID } from '@/data/user';
 
 export const router = Router();

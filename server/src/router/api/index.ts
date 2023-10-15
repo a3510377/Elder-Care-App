@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import users from './users';
 import devices from './devices';
-import { Context } from '../utils/Context';
+import { Context } from '../utils/context';
 
 export const router = Router();
 

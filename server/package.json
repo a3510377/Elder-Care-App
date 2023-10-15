@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint src/**/*.ts --fix",
-    "start": "ts-node -r dotenv/config .",
+    "start": "ts-node -r dotenv/config -r tsconfig-paths/register .",
     "swagger": "ts-node scripts/swagger.ts"
   },
   "dependencies": {

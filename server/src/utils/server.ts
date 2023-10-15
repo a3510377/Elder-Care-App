@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import router from '@/router';
-import { Context } from '@/router/utils/Context';
+import { Context } from '@/router/utils/context';
 
 export const createServer = () => {
   const app = express();
