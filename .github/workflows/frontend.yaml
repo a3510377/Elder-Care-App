@@ -8,7 +8,7 @@ on:
 
 env:
   NUXT_APP_BASE_URL: '/Elder-Care-App'
-  NUXT_PUBLIC_API_URL: ${{ secrets.NUXT_PUBLIC_API_URL }}
+  NUXT_PUBLIC_API_URL: ${{ vars.NUXT_PUBLIC_API_URL }}
 
 permissions:
   contents: read
