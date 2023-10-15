@@ -86,21 +86,21 @@ const getDate = (): `${string}/${string}/${string}` => {
 
 const heartbeat = computed(() => {
   return (
-    deviceBody.value?.heartbeat?.[getDate()].map((d) =>
+    deviceBody.value?.heartbeat?.[getDate()]?.map((d) =>
       d?.filter(Boolean).reduce((a, b) => a + b)
     ) || []
   );
 });
 const temperature = computed(() => {
   return (
-    deviceBody.value?.temp?.[getDate()].map((d) =>
+    deviceBody.value?.temp?.[getDate()]?.map((d) =>
       d?.filter(Boolean).reduce((a, b) => a + b)
     ) || []
   );
 });
 const stepCount = computed(() => {
   const data =
-    deviceBody.value?.stepCount?.[getDate()].map((d) =>
+    deviceBody.value?.stepCount?.[getDate()]?.map((d) =>
       d?.filter(Boolean).reduce((a, b) => a + b)
     ) || [];
 
@@ -108,7 +108,7 @@ const stepCount = computed(() => {
   const newData: number[] = [];
   for (const d of data) {
     newData.push(d - last);
-    last += d || 0;
+    last = d || 0;
   }
 
   return newData;

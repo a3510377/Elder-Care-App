@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import router from '@/router';
+import { Context } from '@/router/utils/Context';
 
 export const createServer = () => {
   const app = express();
@@ -15,6 +16,7 @@ export const createServer = () => {
   app.use(express.json()).use(express.urlencoded({ extended: false }));
 
   app.use(router);
+  app.set('ctx', new Context());
 
   return app;
 };

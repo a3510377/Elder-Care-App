@@ -7,6 +7,8 @@ import {
   writeDeviceFromID,
 } from '@/data/device';
 import { getDate, getHour, getMinute } from '@/utils/utils';
+import { Context } from '../utils/Context';
+import { getUserFromID } from '@/data/user';
 
 export const router = Router();
 
@@ -107,6 +109,19 @@ router.post('/:id', (req, res) => {
     );
   }
 
+  const user = getUserFromID(device.user_id);
+  if (!user) {
+    /* #swagger.responses[404] = {
+      description: 'User not found',
+      schema: { code: 2 }
+    } */
+    return sendResponse(
+      res,
+      { code: ResponseStatus.NOT_FOUND },
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
   const data: Record<string, number> = req.body;
   const { type } = device;
   if (type === 0) {
@@ -149,8 +164,12 @@ router.post('/:id', (req, res) => {
       }
 
       if (warn.fall) {
+        const now = new Date();
+        const context: Context = res.app.get('ctx');
+
+        context.emit('fall', user, now);
         warnData.fall ||= [];
-        warnData.fall.push(new Date().toISOString());
+        warnData.fall.push(now.toISOString());
       }
     }
 
