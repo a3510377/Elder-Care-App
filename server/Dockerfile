@@ -15,11 +15,12 @@ COPY . .
 RUN yarn install
 RUN yarn run swagger
 
-FROM alpine:latest
+FROM node:18
 
 WORKDIR /app
 COPY --from=docs /app/swagger-output.json .
 COPY --from=builder /app .
 COPY . .
 
+EXPOSE 8000
 CMD ["yarn", "start"]
