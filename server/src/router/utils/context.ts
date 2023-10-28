@@ -57,5 +57,5 @@ export interface Context {
 }
 
 export interface EventsTypes {
-  fall: [user: IUser, date: Date];
+  fall: [user: IUser[], date: Date];
 }

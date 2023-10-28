@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
   const data: SignUpUserData = req.body;
   const { name, address } = data;
 
-  if (!name) {
+  if (!name || !address) {
     /* #swagger.responses[400] = {
       description: "Missing required parameter 'name'",
       schema: { code: 1 }
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
       res,
       {
         code: ResponseStatus.MISSING_ARGUMENT,
-        body: { message: "Missing required parameter 'name'" },
+        body: { message: "Missing required parameter 'name', 'address'" },
       },
       HttpStatus.BAD_REQUEST,
     );
