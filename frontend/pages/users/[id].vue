@@ -5,7 +5,7 @@
       class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 p-4 text-gray-50 w-full md:w-auto"
     >
       <PageDevice
-        v-for="(device, i) in userBody?.devices"
+        v-for="(device, i) in userBody?.device"
         :key="i"
         :device-id="device"
       />

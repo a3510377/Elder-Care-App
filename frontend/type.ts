@@ -29,7 +29,7 @@ export interface User {
   id: string;
   name: string;
   address: string;
-  devices: string[];
+  device: string[];
 }
 
 export type DateType = `${string}/${string}/${string}`; // YYYY-MM-DD
@@ -47,10 +47,11 @@ export interface IDeviceWatch {
   id: string;
   type: 0;
 
-  user_id: string;
-  stepCount?: { [date: DateType]: number[][] }; // every minute
-  heartbeat?: { [date: DateType]: number[][] }; // every minute
-  temp?: { [date: DateType]: number[][] }; // every minute
+  data: {
+    stepCount?: { [date: DateType]: number[][] }; // every minute
+    heartbeat?: { [date: DateType]: number[][] }; // every minute
+    temp?: { [date: DateType]: number[][] }; // every minute
+  };
 
   warn: {
     heartbeat?: { date: string; value: number }[];
@@ -63,10 +64,11 @@ export interface IDeviceEnv {
   id: string;
   type: 1;
 
-  user_id: string;
-  airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
-  humidity?: { [date: DateType]: number[][] }; // every minute
-  temp?: { [date: DateType]: number[][] }; // every minute
+  data: {
+    airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
+    humidity?: { [date: DateType]: number[][] }; // every minute
+    temp?: { [date: DateType]: number[][] }; // every minute
+  };
 
   warn: {
     airQuality?: ({ date: string } & IAirQualityData)[];

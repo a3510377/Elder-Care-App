@@ -1,11 +1,13 @@
 <template>
   <div
-    :to="`/devices/${deviceBody?.id}`"
+    :to="`/devices/${deviceInfo?.id}`"
     class="bg-gray-800 border-2 border-slate-600 hover:bg-[#25303f] p-3 rounded"
   >
     <div class="flex mb-3">
       <span class="block bg-cyan-400 w-3 mr-1.5"></span>
-      <span>手錶 [{{ deviceBody?.id }}]</span>
+      <span class="text-ellipsis overflow-hidden">
+        手錶 [{{ deviceInfo?.id }}]
+      </span>
     </div>
     <div>
       <div>
@@ -76,7 +78,8 @@ const {
 const { data: deviceData } = await useFetch<APIRequestBody<IDeviceWatch>>(
   `${apiUrl}/api/devices/${deviceId}`
 );
-const deviceBody = computed(() => deviceData.value?.body);
+const deviceInfo = computed(() => deviceData.value?.body);
+const deviceBody = computed(() => deviceInfo.value?.data);
 
 const getDate = (): `${string}/${string}/${string}` => {
   const now = new Date();
