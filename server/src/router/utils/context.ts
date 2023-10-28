@@ -1,4 +1,4 @@
-import { IUser } from '@/data/user';
+import { IUser } from '@/models';
 import { EventEmitter } from 'events';
 
 export class Context extends EventEmitter implements Context {}
