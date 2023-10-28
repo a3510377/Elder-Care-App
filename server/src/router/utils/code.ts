@@ -2,6 +2,7 @@ export enum ResponseStatus {
   SUCCESS,
   MISSING_ARGUMENT,
   NOT_FOUND,
+  INVALID_USER_AVATAR_FILE,
 }
 
 export enum HttpStatus {
