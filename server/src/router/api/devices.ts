@@ -1,14 +1,9 @@
 import { Router } from 'express';
 
 import { HttpStatus, ResponseStatus, sendResponse } from '../utils';
-import {
-  createDevice,
-  getDeviceFromID,
-  writeDeviceFromID,
-} from '@/data/device';
 import { getDate, getHour, getMinute } from '@/utils/utils';
 import { Context } from '../utils/context';
-import { getUserFromID } from '@/data/user';
+import { DeviceModel, IRawDeviceWatch, UserModel } from '@/models';
 
 export const router = Router();
 
@@ -17,12 +12,7 @@ export interface RegisterDeviceData {
   user_id: string;
 }
 
-export interface RegisterDeviceData {
-  type: 0 | 1;
-  user_id: string;
-}
-
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // #swagger.tags = ['Devices']
   // #swagger.description = 'Register a new device'
   /* #swagger.requestBody = {
@@ -34,7 +24,7 @@ router.post('/', (req, res) => {
     }
   } */
   const { type, user_id }: RegisterDeviceData = req.body;
-  if (type === undefined || user_id === undefined) {
+  if (type === undefined || !user_id) {
     /* #swagger.responses[400] = {
       description: "Missing required parameter 'type' or 'user_id'",
       schema: { code: 1 }
@@ -53,7 +43,17 @@ router.post('/', (req, res) => {
       description: 'Successful operation',
       schema: { $ref: '#/components/schemas/Device' }
     } */
-    sendResponse(res, { body: createDevice(type, user_id) });
+    const user = await UserModel.findById(user_id).catch(() => null);
+    if (!user) {
+      throw new Error('User is not found');
+    }
+
+    const device = await new DeviceModel({ type }).save();
+
+    user.device.push(device._id);
+    await user.save();
+
+    sendResponse(res, { body: device.getPublicInfo() });
   } catch (e) {
     /* #swagger.responses[400] = {
       description: "invalid user_id",
@@ -67,11 +67,11 @@ router.post('/', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // #swagger.tags = ['Devices']
   // #swagger.description = 'Get device from id'
 
-  const device = getDeviceFromID(req.params.id);
+  const device = await DeviceModel.findById(req.params.id).catch(() => null);
   if (!device) {
     /* #swagger.responses[404] = {
       description: 'Device not found',
@@ -88,31 +88,18 @@ router.get('/:id', (req, res) => {
     description: 'Successful operation',
     schema: { $ref: '#/components/schemas/Device' }
   } */
-  sendResponse(res, { body: device });
+  sendResponse(res, { body: device.getPublicInfo() });
 });
 
-router.post('/:id', (req, res) => {
+router.post('/:id', async (req, res) => {
   // #swagger.tags = ['Devices']
   // #swagger.description = 'Add device data'
 
   const id = req.params.id;
-  const device = getDeviceFromID(id);
+  const device = await DeviceModel.findById(id).catch(() => null);
   if (!device) {
     /* #swagger.responses[404] = {
       description: 'Device not found',
-      schema: { code: 2 }
-    } */
-    return sendResponse(
-      res,
-      { code: ResponseStatus.NOT_FOUND },
-      HttpStatus.NOT_FOUND,
-    );
-  }
-
-  const user = getUserFromID(device.user_id);
-  if (!user) {
-    /* #swagger.responses[404] = {
-      description: 'User not found',
       schema: { code: 2 }
     } */
     return sendResponse(
@@ -127,6 +114,8 @@ router.post('/:id', (req, res) => {
   if (type === 0) {
     const { stepCount, heartbeat, temp } = data;
 
+    device.data ||= {};
+    const deviceData = device.data;
     for (const [key, value] of Object.entries({ stepCount, heartbeat, temp })) {
       if (value !== undefined) {
         const date = getDate();
@@ -134,18 +123,18 @@ router.post('/:id', (req, res) => {
         const minute = getMinute();
 
         // @ts-ignore
-        device[key] ||= {};
+        deviceData[key] ||= {};
         // @ts-ignore
-        device[key][date] ||= [];
+        deviceData[key][date] ||= [];
         // @ts-ignore
-        device[key][date][hour] ||= [];
+        deviceData[key][date][hour] ||= [];
         // @ts-ignore
-        device[key][date][hour][minute] = value;
+        deviceData[key][date][hour][minute] = value;
       }
     }
 
     const warn: any = data.warn;
-    const warnData = device.warn;
+    const warnData = device.warn as IRawDeviceWatch['warn'];
     if (warn) {
       if (warn.heartbeat) {
         warnData.heartbeat ||= [];
@@ -167,13 +156,20 @@ router.post('/:id', (req, res) => {
         const now = new Date();
         const context: Context = res.app.get('ctx');
 
-        context.emit('fall', user, now);
+        const users = await UserModel.find({
+          device: { $contains: device._id },
+        }).catch(() => null);
+
+        if (users) {
+          context.emit('fall', users, now);
+        }
+
         warnData.fall ||= [];
         warnData.fall.push(now.toISOString());
       }
     }
 
-    writeDeviceFromID(id, device);
+    await device.save();
   } else if (type === 1) {
     // TODO add device type 1 handler
     // export interface IFileDeviceEnv {
@@ -195,7 +191,7 @@ router.post('/:id', (req, res) => {
     description: 'Successful operation',
     schema: { $ref: '#/components/schemas/Device' }
   } */
-  sendResponse(res, { body: device });
+  sendResponse(res, { body: device.getPublicInfo() });
 });
 
 export default router;

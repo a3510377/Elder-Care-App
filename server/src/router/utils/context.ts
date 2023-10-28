@@ -1,4 +1,4 @@
-import { IUser } from '@/data/user';
+import { IUser } from '@/models';
 import { EventEmitter } from 'events';
 
 export class Context extends EventEmitter implements Context {}
@@ -57,5 +57,5 @@ export interface Context {
 }
 
 export interface EventsTypes {
-  fall: [user: IUser, date: Date];
+  fall: [user: IUser[], date: Date];
 }

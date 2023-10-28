@@ -1,12 +1,12 @@
-import { init } from './data';
+import { init } from './models';
 import { createServer } from './utils/server';
 
 process
   .on('uncaughtException', console.error)
   .on('unhandledRejection', console.error);
 
-const main = () => {
-  init();
+const main = async () => {
+  await init();
   const app = createServer();
   const port = process.env.PORT ?? 8000;
 
