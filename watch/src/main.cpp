@@ -122,7 +122,7 @@ void loop() {
   sensors_event_t event;
   accel.getEvent(&event);
 
-  if (touchRead(4) <= 50) {
+  if (touchRead(4) <= 80) {
     if (!pulse.state()) pulse.start();
 
     pulse.read();
