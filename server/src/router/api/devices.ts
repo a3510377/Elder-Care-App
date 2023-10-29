@@ -134,6 +134,7 @@ router.post('/:id', async (req, res) => {
     }
 
     const warn: any = data.warn;
+    device.warn ||= {};
     const warnData = device.warn as IRawDeviceWatch['warn'];
     if (warn) {
       if (warn.heartbeat) {
@@ -156,12 +157,12 @@ router.post('/:id', async (req, res) => {
         const now = new Date();
         const context: Context = res.app.get('ctx');
 
-        const users = await UserModel.find({
-          device: { $contains: device._id },
+        const user = await UserModel.findOne({
+          device: { $in: device._id },
         }).catch(() => null);
 
-        if (users) {
-          context.emit('fall', users, now);
+        if (user) {
+          context.emit('fall', user.getPublicInfo(), now);
         }
 
         warnData.fall ||= [];
