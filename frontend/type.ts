@@ -30,6 +30,7 @@ export interface User {
   name: string;
   address: string;
   device: string[];
+  avatar_hash?: string;
 }
 
 export type DateType = `${string}/${string}/${string}`; // YYYY-MM-DD

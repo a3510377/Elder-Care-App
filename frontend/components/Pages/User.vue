@@ -9,7 +9,10 @@
         {{ user.name }} [{{ user.id }}]
       </span>
     </div>
-    <div>
+    <div
+      class="flex"
+      :class="{ 'justify-around items-center': user.avatar_hash }"
+    >
       <div>
         <div>
           <p>地址:</p>
@@ -28,6 +31,14 @@
           </div>
         </div>
       </div>
+      <div v-if="user.avatar_hash">
+        <img
+          ref="imgRef"
+          :src="`${apiUrl}/api/users/${user.id}/avatar`"
+          class="rounded max-h-[80px] max-w-[80px]"
+          alt="user avatar"
+        />
+      </div>
     </div>
   </NuxtLink>
 </template>
@@ -36,6 +47,7 @@
 import { User } from '~/type';
 
 const { user } = defineProps<{ user: User }>();
+const {
+  public: { apiUrl },
+} = useRuntimeConfig();
 </script>
-
-<style lang="scss" scoped></style>

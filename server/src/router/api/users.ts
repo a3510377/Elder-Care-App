@@ -124,9 +124,12 @@ router.post('/:id/avatar', avatarUpload.single('avatar'), async (req, res) => {
     );
   }
 
-  const { data, info } = await sharp(file.buffer).ensureAlpha().raw().toBuffer({
-    resolveWithObject: true,
-  });
+  const { data, info } = await sharp(file.buffer)
+    .ensureAlpha()
+    .resize(80, 80)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
   const avatar_hash = blurhash.encode(
     new Uint8ClampedArray(data),
     info.width,
@@ -134,8 +137,6 @@ router.post('/:id/avatar', avatarUpload.single('avatar'), async (req, res) => {
     5,
     5,
   );
-  console.log(avatar_hash);
-
   user.avatar = file.buffer;
   user.avatar_hash = avatar_hash;
 
