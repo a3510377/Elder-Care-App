@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import multer from 'multer';
-import sharp from 'sharp';
-import * as blurhash from 'blurhash';
 
 import { HttpStatus, ResponseStatus, sendResponse } from '..';
 import { UserModel } from '@/models';
@@ -124,21 +122,8 @@ router.post('/:id/avatar', avatarUpload.single('avatar'), async (req, res) => {
     );
   }
 
-  const { data, info } = await sharp(file.buffer)
-    .ensureAlpha()
-    .resize(80, 80)
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-
-  const avatar_hash = blurhash.encode(
-    new Uint8ClampedArray(data),
-    info.width,
-    info.height,
-    5,
-    5,
-  );
   user.avatar = file.buffer;
-  user.avatar_hash = avatar_hash;
+  user.avatar_hash = 'avatar_hash';
 
   await user.save();
 
@@ -146,7 +131,7 @@ router.post('/:id/avatar', avatarUpload.single('avatar'), async (req, res) => {
       description: 'Successful operation',
       schema: { code: 0, body: {} }
     } */
-  return sendResponse(res, { body: { avatar_hash } });
+  return sendResponse(res, { body: { avatar_hash: 'avatar_hash' } });
 });
 
 router.get('/:id/avatar', async (req, res) => {
