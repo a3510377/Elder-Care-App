@@ -1,3 +1,8 @@
+# FRONTEND_PUBLIC_URL
+# DB_USERNAME
+# DB_USER_PASSWORD
+# SERVER_PUBLIC_URL
+
 version: '3.1'
 
 services:
@@ -14,7 +19,10 @@ services:
     ports:
       - 8000:8000
     environment:
-      DB_CONN_STRING: mongodb://${DB_USERNAME}:${DB_USER_PASSWORD}@mongo:27017/
+      ALLOWED_ORIGINS: ${FRONTEND_PUBLIC_URL}
+      DB_CONN_STRING: mongodb://mongo:27017
+      DATABASE_USERNAME: ${DB_USERNAME}
+      DATABASE_PASSWORD: ${DB_USER_PASSWORD}
   
   app-frontend:
     image: ghcr.io/a3510377/elder-care-app_frontend:latest
@@ -22,4 +30,12 @@ services:
     ports:
       - 80:3000
     environment:
-      NUXT_PUBLIC_API_URL: XXX
+      NUXT_PUBLIC_API_URL: ${SERVER_PUBLIC_URL}
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://${DB_USERNAME}:${DB_USER_PASSWORD}@mongo:27017
