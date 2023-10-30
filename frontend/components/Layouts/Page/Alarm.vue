@@ -34,10 +34,28 @@ onMounted(() => {
     public: { apiUrl },
   } = useRuntimeConfig();
 
-  const event = new EventSource(`${apiUrl}/api`);
-  event.addEventListener('fall', ({ data }) => {
-    alarmMap.data.push(JSON.parse(data).user as User);
-  });
+  let loop: NodeJS.Timeout;
+  const connect = () => {
+    clearTimeout(loop);
+
+    const ws = new WebSocket(apiUrl.replace(/http(s)?:\/\/(.*)/, 'ws$1://$2'));
+    ws.addEventListener('message', ({ data: rawData }) => {
+      const { data, event } = JSON.parse(rawData);
+
+      switch (event) {
+        case 'fall':
+          alarmMap.data.push(data.user as User);
+          break;
+        case 'poll':
+          ws.send(JSON.stringify({ event: 'poll' }));
+          break;
+      }
+    });
+
+    const reconnect = () => (loop = setTimeout(connect, 1e3));
+    ws.addEventListener('close', reconnect);
+    ws.addEventListener('error', reconnect);
+  };
 });
 </script>
 

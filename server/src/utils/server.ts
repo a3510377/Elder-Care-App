@@ -15,8 +15,9 @@ export const createServer = () => {
   app.use(cors({ origin: allowOrigins }));
   app.use(express.json()).use(express.urlencoded({ extended: false }));
 
+  const ctx = new Context();
   app.use(router);
-  app.set('ctx', new Context());
+  app.set('ctx', ctx);
 
-  return app;
+  return { app, ctx };
 };
