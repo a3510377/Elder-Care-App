@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { User } from '~/type';
 
-const alarmMap = reactive<User[]>([]);
+const alarmMap = useAlarmMap();
 
 onMounted(() => {
   const {
