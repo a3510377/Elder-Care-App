@@ -2,7 +2,7 @@
   <div class="fixed bottom-8 right-8 gap-3 flex flex-col">
     <div
       class="flex items-center justify-center relative w-56 h-20 bg-slate-100 rounded-lg transition-transform -translate-y-5 duration-300"
-      v-for="(user, id) in alarmMap"
+      v-for="(user, id) in alarmMap.data"
       :key="id"
     >
       <span class="-top-1 -left-1 absolute flex h-3 w-3">
@@ -15,7 +15,7 @@
       </span>
       <div
         class="top-2 right-2 absolute rounded-full p-0.5 cursor-pointer hover:bg-slate-300"
-        @click="() => alarmMap.splice(id, 1)"
+        @click="() => alarmMap.data.splice(id, 1)"
       >
         <Icon name="mdi:close" class="!block" width="18px" height="18px" />
       </div>
@@ -36,7 +36,7 @@ onMounted(() => {
 
   const event = new EventSource(`${apiUrl}/api`);
   event.addEventListener('fall', ({ data }) => {
-    alarmMap.push(JSON.parse(data).user as User);
+    alarmMap.data.push(JSON.parse(data).user as User);
   });
 });
 </script>

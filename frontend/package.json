@@ -18,9 +18,11 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.5.0",
     "@vueuse/nuxt": "^10.5.0",
     "chart.js": "^4.4.0",
+    "pinia": "^2.1.7",
     "sass": "^1.69.1",
     "vue-chartjs": "^5.2.0"
   }

@@ -22,7 +22,7 @@ const {
 } = useRuntimeConfig();
 
 const alarmMap = useAlarmMap();
-const alarmMapUserIds = computed(() => alarmMap.map((d) => d.id));
+const alarmMapUserIds = computed(() => alarmMap.data.map((d) => d.id));
 
 const { data: data } = await useFetch<APIRequestBody<User[]>>(
   `${apiUrl}/api/users`,
