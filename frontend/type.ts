@@ -25,12 +25,23 @@ export interface APIRequestBody<T> {
   body?: T;
 }
 
+export enum GenderType {
+  Male,
+  Female,
+}
+
 export interface User {
   id: string;
   name: string;
+  age: number;
+  phone: String;
+  gender: GenderType;
+  remark: string;
   address: string;
   device: string[];
-  avatar_hash?: string;
+  password: string;
+  avatar: Buffer;
+  avatar_hash: String;
 }
 
 export type DateType = `${string}/${string}/${string}`; // YYYY-MM-DD

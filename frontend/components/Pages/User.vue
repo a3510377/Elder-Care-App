@@ -14,10 +14,11 @@
       :class="{ 'justify-around items-center': user.avatar_hash }"
     >
       <div>
-        <div>
-          <p>地址:</p>
-          <div class="text-sm">{{ user.address }}</div>
-        </div>
+        <div class="text-sm">性別: {{ user.gender ? '女' : '男' }}</div>
+        <div class="text-sm">年齡: {{ user.age }}</div>
+        <div class="text-sm">備註: {{ user.remark }}</div>
+        <div class="text-sm">地址: {{ user.address }}</div>
+        <div class="text-sm">電話: {{ user.phone }}</div>
         <div>
           <p>設備:</p>
           <div class="text-sm">

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import { HttpStatus, ResponseStatus, sendResponse } from '..';
-import { UserModel } from '@/models';
+import { GenderType, UserModel } from '@/models';
 
 export const router = Router();
 const avatarUpload = multer({
@@ -19,6 +19,10 @@ const avatarUpload = multer({
 export interface SignUpUserData {
   name: string;
   address?: string;
+  age?: number;
+  phone?: string;
+  gender?: GenderType;
+  remark?: string;
 }
 
 router.get('/', async (req, res) => {
@@ -45,7 +49,7 @@ router.post('/', async (req, res) => {
     }
   } */
   const data: SignUpUserData = req.body;
-  const { name, address } = data;
+  const { name, address, age, phone, gender, remark } = data;
 
   if (!name || !address) {
     /* #swagger.responses[400] = {
@@ -62,7 +66,14 @@ router.post('/', async (req, res) => {
     );
   }
 
-  const user = await new UserModel({ name, address }).save();
+  const user = await new UserModel({
+    name,
+    address,
+    age,
+    phone,
+    gender,
+    remark,
+  }).save();
 
   /* #swagger.responses[200] = {
     description: 'Successful operation',
