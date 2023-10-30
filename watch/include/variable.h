@@ -1,6 +1,6 @@
 #pragma once
 
-#define SERVER_ADDRESS "http://192.168.20.38:8000"
+#define SERVER_ADDRESS "http://104.199.200.204:8000"
 
 #define DNS_PORT 53
 

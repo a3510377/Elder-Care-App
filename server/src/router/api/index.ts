@@ -16,6 +16,12 @@ router.get('/', (req, res) => {
   });
 
   res.write(`retry: 1500\n\n`);
+  res.write(`event: link\ndata:-\n\n`);
+
+  const loop = setInterval(() => {
+    res.write(`event: poll\ndata:-\n\n`);
+  }, 1000 * 20);
+  req.on('close', () => clearInterval(loop));
 
   const context: Context = res.app.get('ctx');
   context.on('fall', (user, now) => {
