@@ -56,6 +56,7 @@ onMounted(() => {
     ws.addEventListener('close', reconnect);
     ws.addEventListener('error', reconnect);
   };
+  connect();
 });
 </script>
 
