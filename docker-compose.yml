@@ -23,7 +23,7 @@ services:
       DB_CONN_STRING: mongodb://mongo:27017
       DATABASE_USERNAME: ${DB_USERNAME}
       DATABASE_PASSWORD: ${DB_USER_PASSWORD}
-  
+
   app-frontend:
     image: ghcr.io/a3510377/elder-care-app_frontend:latest
     restart: always
