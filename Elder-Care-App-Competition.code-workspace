@@ -1,20 +1,8 @@
 {
   "folders": [
-    {
-      "name": "root",
-      "path": "."
-    },
-    {
-      "name": "watch",
-      "path": "watch"
-    },
-    {
-      "name": "server",
-      "path": "server"
-    },
-    {
-      "name": "frontend",
-      "path": "frontend"
-    }
+    { "name": "root", "path": "." },
+    { "name": "watch", "path": "watch" },
+    { "name": "server", "path": "server" },
+    { "name": "frontend", "path": "frontend" }
   ]
 }
