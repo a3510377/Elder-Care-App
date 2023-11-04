@@ -31,7 +31,7 @@ const main = async () => {
       axios.post(
         'https://notify-api.line.me/api/notify',
         {
-          message: `${user.name} 跌倒了!!  \n  手機：${user.phone}\n  地址：${user.address}`,
+          message: `${user.name} 跌倒了!!\n  手機：${user.phone}\n  地址：${user.address}`,
         },
         {
           headers: {
