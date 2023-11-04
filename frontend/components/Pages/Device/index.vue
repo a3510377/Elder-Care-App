@@ -90,21 +90,21 @@ const getDate = (): `${string}/${string}/${string}` => {
 const heartbeat = computed(() => {
   return (
     deviceBody.value?.heartbeat?.[getDate()]?.map((d) =>
-      d?.filter(Boolean).reduce((a, b) => a + b)
+      d?.filter(Boolean).reduce((a, b) => a + b, 0)
     ) || []
   );
 });
 const temperature = computed(() => {
   return (
     deviceBody.value?.temp?.[getDate()]?.map((d) =>
-      d?.filter(Boolean).reduce((a, b) => a + b)
+      d?.filter(Boolean).reduce((a, b) => a + b, 0)
     ) || []
   );
 });
 const stepCount = computed(() => {
   const data =
     deviceBody.value?.stepCount?.[getDate()]?.map((d) =>
-      d?.filter(Boolean).reduce((a, b) => a + b)
+      d?.filter(Boolean).reduce((a, b) => a + b, 0)
     ) || [];
 
   let last = 0;
