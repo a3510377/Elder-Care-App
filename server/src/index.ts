@@ -1,6 +1,8 @@
+import axios from 'axios';
+import { Server as SocketServer } from 'ws';
+
 import { init } from './models';
 import { createServer } from './utils/server';
-import { Server as SocketServer } from 'ws';
 
 process
   .on('uncaughtException', console.error)
@@ -24,6 +26,22 @@ const main = async () => {
     client.on('close', () => clearInterval(loop));
   });
   ctx.on('fall', (user, now) => {
+    const NOTIFY_TOKEN = process.env.NOTIFY_TOKEN;
+    if (NOTIFY_TOKEN) {
+      axios.post(
+        'https://notify-api.line.me/api/notify',
+        {
+          message: `${user.name} 跌倒了!!  \n  手機：${user.phone}\n  地址：${user.address}`,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${NOTIFY_TOKEN}`,
+          },
+        },
+      );
+    }
+
     ws.clients.forEach((client) => {
       client.send(JSON.stringify({ event: 'fall', data: { user, now } }));
     });
