@@ -7,6 +7,8 @@
 #include "utils/info.h"
 #include "variable.h"
 
+#define FALL_FLAG (1 << 0)
+
 Home::Home() {
   ui_batteryGroup = lv_obj_create(scr);
   lv_obj_set_size(ui_batteryGroup, 50, 20);
@@ -257,6 +259,29 @@ Home::Home() {
   lv_label_set_text(ui_WiFiStatusIcon, ICON_WIFI_FIND);
   lv_obj_set_style_text_font(ui_WiFiStatusIcon, &fontIcon, LV_CU_BASE_STYLE);
 
+  ui_fallWarnGroup = lv_obj_create(scr);
+  lv_obj_set_size(ui_fallWarnGroup, 100, 50);
+  lv_obj_set_pos(ui_fallWarnGroup, 0, 0);
+  lv_obj_set_align(ui_fallWarnGroup, LV_ALIGN_CENTER);
+  lv_obj_add_flag(ui_fallWarnGroup, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_clear_flag(ui_fallWarnGroup, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_style_bg_color(ui_fallWarnGroup, lv_color_hex(0xFFFFFF),
+                            LV_CU_BASE_STYLE);
+  lv_obj_set_style_bg_opa(ui_fallWarnGroup, 255, LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_color(ui_fallWarnGroup, lv_color_hex(0x000000),
+                                LV_CU_BASE_STYLE);
+  lv_obj_set_style_border_opa(ui_fallWarnGroup, 0, LV_CU_BASE_STYLE);
+
+  ui_fallWarn = lv_label_create(ui_fallWarnGroup);
+  lv_obj_set_size(ui_fallWarn, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+  lv_obj_set_pos(ui_fallWarn, 0, 0);
+  lv_obj_move_foreground(ui_fallWarn);
+  lv_label_set_text(ui_fallWarn, "你跌倒了!!");
+  lv_obj_set_align(ui_fallWarn, LV_ALIGN_CENTER);
+  lv_obj_set_style_text_font(ui_fallWarn, &fontChinese, LV_CU_BASE_STYLE);
+  lv_obj_set_style_text_color(ui_fallWarn, lv_color_hex(0xFF0000),
+                              LV_CU_BASE_STYLE);
+
   lv_obj_add_event_cb(scr, screenLoadEvent, LV_EVENT_SCREEN_LOADED, this);
 }
 
@@ -297,6 +322,17 @@ static void moveYAnimation(lv_obj_t *obj, int32_t start, int32_t end) {
 }
 
 void Home::main_process(StateInfo *info) {
+  static uint8_t flag = 0;
+  if (info->fallDetection.has_falling()) {
+    if (!(flag & FALL_FLAG)) {
+      flag |= FALL_FLAG;
+      lv_obj_clear_flag(ui_fallWarnGroup, LV_OBJ_FLAG_HIDDEN);
+    }
+  } else if (flag & FALL_FLAG) {
+    flag &= ~FALL_FLAG;
+    lv_obj_add_flag(ui_fallWarnGroup, LV_OBJ_FLAG_HIDDEN);
+  }
+
   struct tm now;
   char buf[4];
   if (getLocalTime(&now)) {

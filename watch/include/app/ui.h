@@ -29,6 +29,7 @@ extern "C" {
 LV_FONT_DECLARE(fontIcon);
 LV_FONT_DECLARE(fontNumberBig);
 LV_FONT_DECLARE(fontNumberExtra);
+LV_FONT_DECLARE(fontChinese);
 
 #ifdef __cplusplus
 } /*extern "C"*/

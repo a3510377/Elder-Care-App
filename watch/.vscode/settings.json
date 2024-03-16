@@ -310,5 +310,6 @@
     "optional": "cpp",
     "streambuf": "cpp",
     "cmath": "cpp"
-  }
+  },
+  "cmake.configureOnOpen": false
 }

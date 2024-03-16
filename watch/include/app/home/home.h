@@ -48,4 +48,7 @@ class Home: public BaseApp {
   lv_obj_t *ui_temperatureUnit;
 
   lv_obj_t *ui_WiFiStatusIcon;
+
+  lv_obj_t *ui_fallWarnGroup;
+  lv_obj_t *ui_fallWarn;
 };

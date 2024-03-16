@@ -4,5 +4,10 @@
     { "name": "watch", "path": "watch" },
     { "name": "server", "path": "server" },
     { "name": "frontend", "path": "frontend" }
-  ]
+  ],
+  "settings": {
+    "files.associations": {
+      "ui.h": "c"
+    }
+  }
 }
