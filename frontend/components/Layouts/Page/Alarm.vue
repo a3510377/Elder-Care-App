@@ -30,7 +30,7 @@ import { User } from '~/type';
 const alarmMap = useAlarmMap();
   
 onMounted(() => {
-  Object.assign(windows, {
+  Object.assign(window, {
     alert_test: (data: User) => alarmMap.data.push(data),
   });
 
