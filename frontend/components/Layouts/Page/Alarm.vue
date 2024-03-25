@@ -28,8 +28,12 @@
 import { User } from '~/type';
 
 const alarmMap = useAlarmMap();
-
+  
 onMounted(() => {
+  Object.assign(windows, {
+    alert_test: (data: User) => alarmMap.data.push(data),
+  });
+
   const {
     public: { apiUrl },
   } = useRuntimeConfig();
