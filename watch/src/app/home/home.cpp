@@ -260,7 +260,7 @@ Home::Home() {
   lv_obj_set_style_text_font(ui_WiFiStatusIcon, &fontIcon, LV_CU_BASE_STYLE);
 
   ui_fallWarnGroup = lv_obj_create(scr);
-  lv_obj_set_size(ui_fallWarnGroup, 100, 50);
+  lv_obj_set_size(ui_fallWarnGroup, 150, 100);
   lv_obj_set_pos(ui_fallWarnGroup, 0, 0);
   lv_obj_set_align(ui_fallWarnGroup, LV_ALIGN_CENTER);
   lv_obj_add_flag(ui_fallWarnGroup, LV_OBJ_FLAG_HIDDEN);

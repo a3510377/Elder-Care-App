@@ -1,6 +1,6 @@
 #pragma once
 
-#define SERVER_ADDRESS "http://104.199.200.204:8000"
+#define SERVER_ADDRESS "http://elder-care-app-api.monkey-cat.com"
 
 #define DNS_PORT 53
 

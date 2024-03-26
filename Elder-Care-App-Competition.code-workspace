@@ -7,7 +7,18 @@
   ],
   "settings": {
     "files.associations": {
-      "ui.h": "c"
+      "ui.h": "c",
+      "algorithm": "cpp",
+      "charconv": "cpp",
+      "ios": "cpp",
+      "istream": "cpp",
+      "ostream": "cpp",
+      "xstring": "cpp",
+      "*.tcc": "cpp",
+      "unordered_map": "cpp",
+      "fstream": "cpp",
+      "sstream": "cpp",
+      "cmath": "cpp"
     }
   }
 }

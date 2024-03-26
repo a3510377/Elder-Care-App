@@ -13,6 +13,15 @@ static void taskStartConfigPortal(void *arg) {
 
 void Network::init() {
   WifiConfig config = getWifiConfig();
+
+  Serial.print(F("WiFi config: "));
+  Serial.println(config.SSID);
+  Serial.print(F("WiFi Password: "));
+  Serial.println(config.Password);
+  Serial.print(F("Driver ID: "));
+  Serial.println(config.ID);
+
+  saveWifiConfig(config);
   if (config.SSID == "" || config.ID == "") {
     xTaskCreate(taskStartConfigPortal, "WiFiConfigPortal", 4096, this, 1, NULL);
   } else WiFi.begin(config.SSID, config.Password);
