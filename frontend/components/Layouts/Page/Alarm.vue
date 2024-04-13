@@ -1,8 +1,8 @@
 <template>
   <div class="fixed bottom-8 right-8 gap-3 flex flex-col">
     <div
-      class="flex items-center justify-center relative w-56 h-20 bg-slate-100 rounded-lg transition-transform -translate-y-5 duration-300"
-      v-for="(message, id) in alarmMap.data"
+      class="flex items-center justify-center relative w-min-56 px-4 h-20 bg-slate-100 rounded-lg transition-transform -translate-y-5 duration-300"
+      v-for="({ message }, id) in alarmMap.data"
       :key="id"
     >
       <span class="-top-1 -left-1 absolute flex h-3 w-3">
