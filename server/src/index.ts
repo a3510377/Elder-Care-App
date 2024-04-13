@@ -27,7 +27,7 @@ const main = async () => {
   });
   ctx.on('warn', (user, data) => {
     ws.clients.forEach((client) => {
-      client.send(JSON.stringify({ event: 'fail', data: { data, user } }));
+      client.send(JSON.stringify({ event: 'warn', data: { data, user } }));
     });
   });
   ctx.on('fall', (user, now) => {
