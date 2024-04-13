@@ -98,3 +98,8 @@ export interface IDeviceEnvWarn {
   co2?: number;
   pm2_5?: number;
 }
+
+export interface IAlarm {
+  user?: User;
+  message: string;
+}

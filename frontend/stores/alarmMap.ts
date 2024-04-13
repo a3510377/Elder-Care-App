@@ -1,3 +1,5 @@
+import { IAlarm } from '~/type';
+
 export const useAlarmMap = defineStore('AlarmMap', {
-  state: (): { data: string[] } => ({ data: [] }),
+  state: (): { data: IAlarm[] } => ({ data: [] }),
 });

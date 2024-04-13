@@ -31,7 +31,7 @@ const alarmMap = useAlarmMap();
 
 onMounted(() => {
   Object.assign(window, {
-    alert_test: (data: string) => alarmMap.data.push(data),
+    alert_test: (data: string) => alarmMap.data.push({ message: data }),
   });
 
   const {
@@ -50,7 +50,7 @@ onMounted(() => {
         case 'fall':
           {
             const user = data.user as User;
-            alarmMap.data.push(`${user.name} 跌倒了!!`);
+            alarmMap.data.push({ user, message: `${user.name} 降落了` });
           }
           break;
         case 'poll':
@@ -73,9 +73,10 @@ onMounted(() => {
             }
             console.info('get warn data:', warnData);
 
-            alarmMap.data.push(
-              `${user.name} ${warnMessages.join('/')} 超標了!!`
-            );
+            alarmMap.data.push({
+              user: user,
+              message: `${user.name} ${warnMessages.join('/')} 超標了!!`,
+            });
           }
           break;
       }
