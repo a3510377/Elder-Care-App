@@ -68,10 +68,10 @@ onMounted(() => {
               pm2_5: '空氣品質',
             };
 
-            for (const [key, value] of Object.entries(warnData)) {
-              if (!value && key in messageMap)
-                warnMessages.push(messageMap[key]);
+            for (const [key, _] of Object.entries(warnData)) {
+              if (key in messageMap) warnMessages.push(messageMap[key]);
             }
+            console.info('get warn data:', warnData);
 
             alarmMap.data.push(
               `${user.name} ${warnMessages.join('/')} 超標了!!`
