@@ -82,9 +82,9 @@ export interface IDeviceEnv {
   type: 1;
 
   data: {
-    airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
-    humidity?: { [date: DateType]: number[][] }; // every minute
-    temp?: { [date: DateType]: number[][] }; // every minute
+    co?: { [date: DateType]: number[][] }; // every minute
+    co2?: { [date: DateType]: number[][] }; // every minute
+    pm2_5?: { [date: DateType]: number[][] }; // every minute
   };
 
   warn: {
