@@ -25,6 +25,11 @@ const main = async () => {
     client.send(JSON.stringify({ event: 'link' }));
     client.on('close', () => clearInterval(loop));
   });
+  ctx.on('warn', (user, data) => {
+    ws.clients.forEach((client) => {
+      client.send(JSON.stringify({ event: 'fail', data: { data, user } }));
+    });
+  });
   ctx.on('fall', (user, now) => {
     const NOTIFY_TOKEN = process.env.NOTIFY_TOKEN;
     if (NOTIFY_TOKEN) {

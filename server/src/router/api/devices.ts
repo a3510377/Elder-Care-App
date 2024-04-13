@@ -213,8 +213,8 @@ router.post('/:id', async (req, res) => {
       if (user) {
         const warnData: IDeviceEnvWarn = {};
         if (warn.co) warnData.co = co;
-        if (warn.co2) warnData.co = co2;
-        if (warn.pm2_5) warnData.co = pm2_5;
+        if (warn.co2) warnData.co2 = co2;
+        if (warn.pm2_5) warnData.pm2_5 = pm2_5;
 
         if (Object.keys({}).length) {
           context.emit('warn', user.getPublicInfo(), warnData);

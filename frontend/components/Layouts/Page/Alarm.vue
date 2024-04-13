@@ -2,7 +2,7 @@
   <div class="fixed bottom-8 right-8 gap-3 flex flex-col">
     <div
       class="flex items-center justify-center relative w-56 h-20 bg-slate-100 rounded-lg transition-transform -translate-y-5 duration-300"
-      v-for="(user, id) in alarmMap.data"
+      v-for="(message, id) in alarmMap.data"
       :key="id"
     >
       <span class="-top-1 -left-1 absolute flex h-3 w-3">
@@ -19,19 +19,19 @@
       >
         <Icon name="mdi:close" class="!block" width="18px" height="18px" />
       </div>
-      <p>{{ user.name }} 跌倒了!!</p>
+      <p>{{ message }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { User } from '~/type';
+import { User, IDeviceEnvWarn } from '~/type';
 
 const alarmMap = useAlarmMap();
-  
+
 onMounted(() => {
   Object.assign(window, {
-    alert_test: (data: User) => alarmMap.data.push(data),
+    alert_test: (data: string) => alarmMap.data.push(data),
   });
 
   const {
@@ -48,10 +48,35 @@ onMounted(() => {
 
       switch (event) {
         case 'fall':
-          alarmMap.data.push(data.user as User);
+          {
+            const user = data.user as User;
+            alarmMap.data.push(`${user.name} 跌倒了!!`);
+          }
           break;
         case 'poll':
           ws.send(JSON.stringify({ event: 'poll' }));
+          break;
+        case 'warn':
+          {
+            const user = data.user as User;
+            const warnData = data.data as IDeviceEnvWarn;
+
+            const warnMessages: string[] = [];
+            const messageMap: Record<string, string> = {
+              co: '一氧化炭濃度',
+              co2: '二氧化炭濃度',
+              pm2_5: '空氣品質',
+            };
+
+            for (const [key, value] of Object.entries(warnData)) {
+              if (!value && key in messageMap)
+                warnMessages.push(messageMap[key]);
+            }
+
+            alarmMap.data.push(
+              `${user.name} ${warnMessages.join('/')} 超標了!!`
+            );
+          }
           break;
       }
     });

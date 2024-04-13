@@ -44,6 +44,11 @@ export interface User {
   avatar_hash: String;
 }
 
+export interface WarnData {
+  user: User;
+  message: string;
+}
+
 export type DateType = `${string}/${string}/${string}`; // YYYY-MM-DD
 
 export type Device = IDeviceWatch | IDeviceEnv;
@@ -86,4 +91,10 @@ export interface IDeviceEnv {
     airQuality?: ({ date: string } & IAirQualityData)[];
     harmfulGas?: { date: string; value: number }[];
   };
+}
+
+export interface IDeviceEnvWarn {
+  co?: number;
+  co2?: number;
+  pm2_5?: number;
 }
