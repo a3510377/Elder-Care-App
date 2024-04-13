@@ -3,7 +3,12 @@ import { Router } from 'express';
 import { HttpStatus, ResponseStatus, sendResponse } from '../utils';
 import { getDate, getHour, getMinute } from '@/utils/utils';
 import { Context } from '../utils/context';
-import { DeviceModel, IRawDeviceWatch, UserModel } from '@/models';
+import {
+  DeviceModel,
+  IDeviceEnvWarn,
+  IRawDeviceWatch,
+  UserModel,
+} from '@/models';
 
 export const router = Router();
 
@@ -116,7 +121,11 @@ router.post('/:id', async (req, res) => {
 
     device.data ||= {};
     const deviceData = device.data;
-    for (const [key, value] of Object.entries({ stepCount, heartbeat, temp })) {
+    for (const [key, value] of Object.entries({
+      stepCount,
+      heartbeat,
+      temp,
+    })) {
       if (value !== undefined) {
         const date = getDate();
         const hour = getHour();
@@ -172,6 +181,48 @@ router.post('/:id', async (req, res) => {
 
     await device.save();
   } else if (type === 1) {
+    const { co, co2, pm2_5 } = data;
+
+    device.data ||= {};
+    const deviceData = device.data;
+    for (const [key, value] of Object.entries({ co, co2, pm2_5 })) {
+      if (value !== undefined) {
+        const date = getDate();
+        const hour = getHour();
+        const minute = getMinute();
+
+        // @ts-ignore
+        deviceData[key] ||= {};
+        // @ts-ignore
+        deviceData[key][date] ||= [];
+        // @ts-ignore
+        deviceData[key][date][hour] ||= [];
+        // @ts-ignore
+        deviceData[key][date][hour][minute] = value;
+      }
+    }
+
+    const warn: any = data.warn;
+    device.warn ||= {};
+    if (warn) {
+      const context: Context = res.app.get('ctx');
+      const user = await UserModel.findOne({
+        device: { $in: device._id },
+      }).catch(() => null);
+
+      if (user) {
+        const warnData: IDeviceEnvWarn = {};
+        if (warn.co) warnData.co = co;
+        if (warn.co2) warnData.co = co2;
+        if (warn.pm2_5) warnData.co = pm2_5;
+
+        if (Object.keys({}).length) {
+          context.emit('warn', user.getPublicInfo(), warnData);
+        }
+      }
+    }
+
+    await device.save();
     // TODO add device type 1 handler
     // export interface IFileDeviceEnv {
     //   type: 1;

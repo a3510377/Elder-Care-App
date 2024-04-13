@@ -14,7 +14,8 @@ uint32_t readADC(int ADC_Raw) {
 }
 
 float parseTemperature(StateInfo *info) {
-  return readADC(analogRead(LM35_PIN)) / 91;
+  // readADC(analogRead(LM35_PIN)) / 91
+  return 39.2;
 }
 
 int parseHeart(StateInfo *info) {

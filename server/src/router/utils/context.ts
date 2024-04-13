@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-import { IPublicUser } from '@/models';
+import { IDeviceEnvWarn, IPublicDevice, IPublicUser } from '@/models';
 
 export class Context extends EventEmitter implements Context {}
 
@@ -59,4 +59,5 @@ export interface Context {
 
 export interface EventsTypes {
   fall: [user: IPublicUser, date: Date];
+  warn: [user: IPublicUser, data: IDeviceEnvWarn];
 }

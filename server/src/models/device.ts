@@ -56,12 +56,16 @@ export interface IRawDeviceEnv {
   type: 1;
 
   data: {
-    airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
-    humidity?: { [date: DateType]: number[][] }; // every minute
-    temp?: { [date: DateType]: number[][] }; // every minute
+    co?: { [date: DateType]: IAirQualityData[][] }; // every minute
+    co2?: { [date: DateType]: number[][] }; // every minute
+    pm2_5?: { [date: DateType]: number[][] }; // every minute
   };
-  warn: {
-    airQuality?: ({ date: string } & IAirQualityData)[];
-    harmfulGas?: { date: string; value: number }[];
-  };
+
+  warn: {};
+}
+
+export interface IDeviceEnvWarn {
+  co?: number;
+  co2?: number;
+  pm2_5?: number;
 }
