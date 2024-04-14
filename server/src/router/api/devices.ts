@@ -216,25 +216,13 @@ router.post('/:id', async (req, res) => {
         if (warn.co2) warnData.co2 = co2;
         if (warn.pm2_5) warnData.pm2_5 = pm2_5;
 
-        if (Object.keys(user).length) {
+        if (Object.keys(warnData).length) {
           context.emit('warn', user.getPublicInfo(), warnData);
         }
       }
     }
 
     await device.save();
-    // TODO add device type 1 handler
-    // export interface IFileDeviceEnv {
-    //   type: 1;
-    //   user_id: string;
-    //   airQuality?: { [date: DateType]: IAirQualityData[][] }; // every minute
-    //   humidity?: { [date: DateType]: number[][] }; // every minute
-    //   temp?: { [date: DateType]: number[][] }; // every minute
-    //   warn: {
-    //     airQuality?: ({ date: Date } & IAirQualityData)[];
-    //     harmfulGas?: { date: Date; value: number }[];
-    //   };
-    // }
   } else {
     // TODO send "Invalid device type" error
   }
