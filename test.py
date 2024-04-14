@@ -137,8 +137,8 @@ users.delete_many({})
 users.insert_many(user_data)
 
 device_data = [
-    {"_id": ObjectId("65f58bc225490c75aef1d029"), "type": 0},
-    {"_id": ObjectId("661a1f85b93bf5a909e3fa2b"), "type": 1},
+    {"_id": ObjectId("65f58bc225490c75aef1d029"), "type": 0, "__v": 0},
+    {"_id": ObjectId("661a1f85b93bf5a909e3fa2b"), "type": 1, "__v": 0},
 ]
 
 devices = db["devices"]
