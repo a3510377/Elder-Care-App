@@ -50,7 +50,7 @@ onMounted(() => {
         case 'fall':
           {
             const user = data.user as User;
-            alarmMap.data.push({ user, message: `${user.name} 降落了` });
+            alarmMap.data.push({ user, message: `${user.name} 跌倒了!` });
           }
           break;
         case 'poll':
