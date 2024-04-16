@@ -179,6 +179,7 @@ router.post('/:id', async (req, res) => {
       }
     }
 
+    device.markModified('data');
     await device.save();
   } else if (type === 1) {
     const { co, co2, pm2_5 } = data;
@@ -222,6 +223,7 @@ router.post('/:id', async (req, res) => {
       }
     }
 
+    device.markModified('data');
     await device.save();
   } else {
     // TODO send "Invalid device type" error
