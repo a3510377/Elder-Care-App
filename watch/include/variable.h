@@ -1,5 +1,6 @@
 #pragma once
 
+// 目前已經關閉伺服器，請自行架設後端服務
 #define SERVER_ADDRESS "http://elder-care-app-api.monkey-cat.com"
 
 #define DNS_PORT 53

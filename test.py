@@ -3,8 +3,8 @@
 
 # # DB_CONN_STRING="mongodb+srv://githun:<password>@sandbox.jadwj.mongodb.net"
 # DB_CONN_STRING="mongodb://192.168.20.2:27017"
-# DATABASE_USERNAME=elder_user
-# DATABASE_PASSWORD=elder_user_password
+# DATABASE_USERNAME=<username>
+# DATABASE_PASSWORD=<password>
 # DB_NAME="elder-care-app"
 # NOTIFY_TOKEN=
 
@@ -12,8 +12,7 @@
 import pymongo
 from bson.objectid import ObjectId
 
-
-myclient = pymongo.MongoClient("mongodb://elder_user:elder_user_password@192.168.20.2:27017")
+myclient = pymongo.MongoClient("mongodb://<username>:<password>@192.168.20.2:27017")
 db = myclient["elder-care-app"]
 users = db["users"]
 
