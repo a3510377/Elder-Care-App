@@ -16,10 +16,10 @@
 
 很多時候家中長者都死於心臟、跌倒等問題，如何及早發現是一個很大的問題。
 
-[![](./assets/圖片/新照片/IMG20231015201307.jpg)](./assets/圖片/新照片/IMG20231015201307.jpg)
-[![](./assets/圖片/新照片/IMG20231015201355.jpg)](./assets/圖片/新照片/IMG20231015201355.jpg)
-[![](./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_215911.png)](./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_215911.png)
-[![](./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_220002.png)](./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_220002.png)
+<a href="./assets/圖片/新照片/IMG20231015201307.jpg"><img src="./assets/圖片/新照片/IMG20231015201307.jpg" alt="IMG20231015201307" style="max-width:360px;height:auto;border:0;margin:6px 0;" /></a>
+<a href="./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_220002.png"><img src="./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_220002.png" alt="screenshot-220002" style="max-width:360px;height:auto;border:0;margin:6px 0;" /></a>
+<a href="./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_215911.png"><img src="./assets/圖片/新照片/螢幕擷取畫面_2023-10-15_215911.png" alt="screenshot-215911" style="max-width:360px;height:auto;border:0;margin:6px 0;" /></a>
+<a href="./assets/圖片/新照片/IMG20231015201355.jpg"><img src="./assets/圖片/新照片/IMG20231015201355.jpg" alt="IMG20231015201355" style="max-width:360px;height:auto;border:0;margin:6px 0;" /></a>
 
 ## 目的
 
@@ -113,7 +113,7 @@
 
   ***
 
-  ## 功能狀態總覽（依程式碼檢視所得，2025-11-03）
+  ## 功能狀態總覽
 
   已實作（有程式碼與呼叫流程）：
 
@@ -173,36 +173,5 @@
     - `frontend/stores/alarmMap.ts` — 警示狀態管理
     - `frontend/pages` / `frontend/components` — UI 與頁面
 
-  ***
-
-  ## 建議的下一步（優先順序）
-
-  1. 實作並驗證 OTA 流程（高優先）
-     - watch：使用 `esp_https_ota` 或 PlatformIO 的 Update API 實作安全下載與簽章驗證。
-     - server：提供 firmware 檔案、版本管理與下載端點。
-  2. 實際測試並修補前端即時警示流程（中優先）
-     - 啟動 server & frontend，模擬裝置上報 warn，驗證 WebSocket 與前端警示 UI（包含手機響應與桌面看板）。
-  3. 加入 SMS / 電話通知（視需求）
-  4. 推進長期健康報表與 HRV 等進階分析（低優先）
-
-  ***
-
-  ## 如何貢獻
-
-  - 建議以小 PR 的方式提出改動：例如「新增 OTA 下載 endpoint」或「在 watch 中新增 Update 程式碼」等。
-  - 每個 PR 請附上簡短測試步驟（如何本地模擬或執行），以及必要時的硬體測試清單。
-
-  ***
-
-  若你要我：
-
-  - 直接把本 README 寫入檔案，我已經替你準備好，現在可以提交（我會覆蓋現有 `README.md`）。
-  - 或希望額外把 README 裡的每個「已實作/未實作」項目連結成可點擊路徑（相對路徑），我也可以把它加入。
-
-  請告訴我是否要在 README 中加入更多細節（例如每個檔案段落的程式碼片段、或更詳細的開發與測試指引），我會依需求繼續更新檔案與待辦。
-
-  ***
-
-  最後更新時間：2025-11-03
-
+最後更新時間：2025-11-03
 以上 README.md 為電腦生成。
